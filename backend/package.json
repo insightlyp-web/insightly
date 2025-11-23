@@ -1,0 +1,54 @@
+{
+  "name": "campusai-hod-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "init-db": "node init-db.js",
+    "migrate:students": "node migrate-student-fields.js",
+    "migrate:ai": "node migrate-ai-fields.js",
+    "seed": "node src/seed/seedMockData.js",
+    "seed:hod": "node src/seed/seedHODData.js",
+    "seed:student-faculty": "node src/seed/seedStudentFacultyData.js",
+    "create-users": "node create_seeded_users.js",
+    "create-admin": "node create_admin_user.js",
+    "fix-profile": "node fix_missing_profile.js",
+    "seed:student": "node seed_student_data.js",
+    "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+    "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch --runInBand"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.84.0",
+    "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "form-data": "^4.0.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.0",
+    "qrcode.react": "^4.2.0",
+    "uuid": "^13.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "nodemon": "^2.0.22",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {},
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.js"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/tests/setup.js"
+    ]
+  }
+}
