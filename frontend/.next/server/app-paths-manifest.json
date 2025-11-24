@@ -1,7 +1,7 @@
 {
-  "/student/timetable/week/page": "app/student/timetable/week/page.js",
-  "/student/placement/posts/page": "app/student/placement/posts/page.js",
-  "/student/events/page": "app/student/events/page.js",
-  "/student/notifications/page": "app/student/notifications/page.js",
-  "/student/dashboard/page": "app/student/dashboard/page.js"
+  "/hod/dashboard/page": "app/hod/dashboard/page.js",
+  "/hod/courses/page": "app/hod/courses/page.js",
+  "/hod/courses/map/page": "app/hod/courses/map/page.js",
+  "/hod/timetable/page": "app/hod/timetable/page.js",
+  "/hod/attendance/page": "app/hod/attendance/page.js"
 }
