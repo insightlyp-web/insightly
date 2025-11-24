@@ -41,24 +41,6 @@ export default function Hero() {
                     >
                         AI-powered attendance, academics & placements — all connected in one secure Supabase cloud.
                     </motion.p>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="flex flex-wrap gap-8 pt-4"
-                    >
-                        {[
-                            { label: "Active Users", value: "10k+" },
-                            { label: "Attendance Mark", value: "<400ms" },
-                            { label: "Uptime", value: "99.9%" },
-                        ].map((stat, i) => (
-                            <div key={i} className="flex flex-col">
-                                <span className="text-2xl font-bold text-slate-900">{stat.value}</span>
-                                <span className="text-sm text-slate-500 font-medium uppercase tracking-wide">{stat.label}</span>
-                            </div>
-                        ))}
-                    </motion.div>
                 </div>
 
                 {/* Hero Visual */}
