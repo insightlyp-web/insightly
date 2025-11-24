@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { StatCard } from "@/components/admin/StatCard";
 import { Card } from "@/components/hod/Card";
 import apiClient from "@/lib/axios";
@@ -77,13 +78,13 @@ export default function AdminDashboard() {
           title="Total Posts"
           value={overview?.total_posts || 0}
           description="All placement posts"
-          icon={<span className="text-2xl">📝</span>}
+          icon={<Image src="/icons_admin/Posts.png" alt="Total Posts" width={24} height={24} />}
         />
         <StatCard
           title="Total Applications"
           value={overview?.total_applications || 0}
           description="All student applications"
-          icon={<span className="text-2xl">📋</span>}
+          icon={<Image src="/icons_admin/Applications.png" alt="Total Applications" width={24} height={24} />}
         />
         {overview?.status_breakdown?.slice(0, 2).map((item) => (
           <StatCard
