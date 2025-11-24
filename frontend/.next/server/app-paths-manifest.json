@@ -1,4 +1,7 @@
 {
+  "/not-found": "app/not-found.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/page": "app/page.js"
   "/hod/courses/page": "app/hod/courses/page.js",
   "/hod/courses/map/page": "app/hod/courses/map/page.js",
   "/hod/timetable/page": "app/hod/timetable/page.js",

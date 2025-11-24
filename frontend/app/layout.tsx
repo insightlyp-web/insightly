@@ -1,6 +1,9 @@
-// app/layout.tsx
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import './globals.css'
+import { cn } from '@/lib/utils'
+
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Insightly — AI-Powered Attendance & Analytics Platform',
@@ -22,8 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={cn(inter.className, "min-h-screen bg-white font-sans antialiased")}>{children}</body>
     </html>
   )
 }
-

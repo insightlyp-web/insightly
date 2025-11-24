@@ -19,7 +19,7 @@ interface DashboardData {
     student_year?: string;
     section?: string;
     roll_number?: string;
-  };
+  } | null;
   attendance_summary: {
     present_count: number;
   };
@@ -40,6 +40,7 @@ interface DashboardData {
     job_type: string;
     package?: string;
     deadline?: string;
+    created_at: string;
   }>;
 }
 
@@ -62,15 +63,18 @@ export default function StudentDashboard() {
       setLoading(true);
       const response = await apiClient.get("/student/dashboard");
       console.log("Dashboard API response:", response.data);
-      
+
       // Transform response to match expected format
       const transformedData: DashboardData = {
         profile: response.data.profile || null,
         attendance_summary: response.data.attendance_summary || { present_count: 0 },
         today_timetable: response.data.today_timetable || response.data.timetable || [],
-        recent_placements: response.data.recent_placements || [],
+        recent_placements: (response.data.recent_placements || []).map((p: any) => ({
+          ...p,
+          created_at: p.created_at || new Date().toISOString()
+        })),
       };
-      
+
       // Validate that profile exists
       if (!transformedData.profile) {
         console.error("Profile missing from dashboard response:", response.data);
@@ -84,7 +88,7 @@ export default function StudentDashboard() {
           console.error("Failed to fetch profile separately:", profileError);
         }
       }
-      
+
       setData(transformedData);
     } catch (error: any) {
       console.error("Failed to fetch dashboard data:", error);
