@@ -1,7 +1,10 @@
 {
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/posts/page": "app/admin/posts/page.js",
-  "/admin/analytics/overview/page": "app/admin/analytics/overview/page.js",
-  "/admin/analytics/company/page": "app/admin/analytics/company/page.js",
-  "/admin/analytics/department/page": "app/admin/analytics/department/page.js"
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/hod/dashboard/page": "app/hod/dashboard/page.js",
+  "/hod/students/page": "app/hod/students/page.js",
+  "/hod/faculty/page": "app/hod/faculty/page.js",
+  "/hod/courses/page": "app/hod/courses/page.js",
+  "/hod/courses/map/page": "app/hod/courses/map/page.js",
+  "/hod/attendance/page": "app/hod/attendance/page.js",
+  "/hod/timetable/page": "app/hod/timetable/page.js"
 }
