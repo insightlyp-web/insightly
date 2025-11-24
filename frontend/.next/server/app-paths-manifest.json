@@ -1,7 +1,4 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/hod/dashboard/page": "app/hod/dashboard/page.js",
-  "/hod/students/page": "app/hod/students/page.js",
   "/hod/faculty/page": "app/hod/faculty/page.js",
   "/hod/courses/page": "app/hod/courses/page.js",
   "/hod/courses/map/page": "app/hod/courses/map/page.js",
