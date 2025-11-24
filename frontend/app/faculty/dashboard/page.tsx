@@ -3,6 +3,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Card } from "@/components/faculty/Card";
 import { Table } from "@/components/faculty/Table";
 import apiClient from "@/lib/axios";
@@ -68,9 +69,9 @@ export default function FacultyDashboard() {
   };
 
   const statsData = [
-    { name: "Total Courses", value: stats.courses, icon: "📚", color: "bg-blue-100 text-blue-600" },
-    { name: "Sessions Created", value: stats.sessions, icon: "📅", color: "bg-green-100 text-green-600" },
-    { name: "Assessments", value: stats.assessments, icon: "📝", color: "bg-purple-100 text-purple-600" },
+    { name: "Total Courses", value: stats.courses, icon: "/icons_faculty/Courses.png", color: "bg-blue-100 text-blue-600" },
+    { name: "Sessions Created", value: stats.sessions, icon: "/icons_faculty/Sessions Created.png", color: "bg-green-100 text-green-600" },
+    { name: "Assessments", value: stats.assessments, icon: "/icons_faculty/Assessments.png", color: "bg-purple-100 text-purple-600" },
   ];
 
   const sessionColumns = [
@@ -115,7 +116,12 @@ export default function FacultyDashboard() {
               <Card key={stat.name}>
                 <div className="flex items-center">
                   <div className={`flex-shrink-0 p-3 rounded-lg ${stat.color}`}>
-                    <span className="text-2xl">{stat.icon}</span>
+                    <Image 
+                      src={stat.icon} 
+                      alt={stat.name} 
+                      width={24} 
+                      height={24}
+                    />
                   </div>
                   <div className="ml-4">
                     <p className="text-sm font-medium text-gray-500">{stat.name}</p>
