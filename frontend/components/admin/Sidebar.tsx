@@ -6,10 +6,10 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: "📊" },
-  { name: "Posts", href: "/admin/posts", icon: "📝" },
-  { name: "Create Post", href: "/admin/posts/create", icon: "➕" },
-  { name: "Applications", href: "/admin/posts", icon: "📋" },
+  { name: "Dashboard", href: "/admin/dashboard", icon: "/icons_admin/Dashboard.png" },
+  { name: "Posts", href: "/admin/posts", icon: "/icons_admin/Posts.png" },
+  { name: "Create Post", href: "/admin/posts/create", icon: "/icons_admin/Create Post.png" },
+  { name: "Applications", href: "/admin/posts", icon: "/icons_admin/Applications.png" },
   {
     name: "Analytics",
     children: [
@@ -74,7 +74,13 @@ export function Sidebar() {
                 }
               `}
             >
-              <span className="mr-3 text-lg">{item.icon}</span>
+              <Image 
+                src={item.icon} 
+                alt={item.name} 
+                width={20} 
+                height={20} 
+                className="mr-3"
+              />
               {item.name}
             </Link>
           );
