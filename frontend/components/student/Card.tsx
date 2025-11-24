@@ -1,14 +1,12 @@
-// components/student/Card.tsx
-import { ReactNode } from "react";
+import { ReactNode, HTMLAttributes } from "react";
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
-  className?: string;
 }
 
-export function Card({ children, className = "" }: CardProps) {
+export function Card({ children, className = "", ...props }: CardProps) {
   return (
-    <div className={`bg-white border border-gray-200 shadow-md rounded-xl p-6 ${className}`}>
+    <div className={`bg-white border border-gray-200 shadow-md rounded-xl p-6 ${className}`} {...props}>
       {children}
     </div>
   );

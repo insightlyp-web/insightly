@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from "react";
 import apiClient from "@/lib/axios";
-import { Card } from "@/components/admin/StatCard";
+import { Card } from "@/components/admin/Card";
 
 interface PlacementPrediction {
   student_id: string;
@@ -113,13 +113,12 @@ export function AIPlacementSuccess() {
                     <div className="flex items-center">
                       <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
                         <div
-                          className={`h-2 rounded-full ${
-                            prediction.success_probability >= 70
-                              ? "bg-green-500"
-                              : prediction.success_probability >= 50
+                          className={`h-2 rounded-full ${prediction.success_probability >= 70
+                            ? "bg-green-500"
+                            : prediction.success_probability >= 50
                               ? "bg-yellow-500"
                               : "bg-red-500"
-                          }`}
+                            }`}
                           style={{ width: `${prediction.success_probability}%` }}
                         ></div>
                       </div>
