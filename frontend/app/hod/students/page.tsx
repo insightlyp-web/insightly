@@ -15,6 +15,7 @@ interface Student {
   student_year?: string;
   section?: string;
   roll_number?: string;
+  resume_url?: string;
   created_at: string;
 }
 
@@ -22,6 +23,7 @@ export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
+  const [uploadingResume, setUploadingResume] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
@@ -74,6 +76,45 @@ export default function StudentsPage() {
     }
   };
 
+  const handleResumeUpload = async (studentId: string, file: File) => {
+    if (file.type !== "application/pdf") {
+      setMessage({
+        type: "error",
+        text: "Please upload a PDF file",
+      });
+      return;
+    }
+
+    try {
+      setUploadingResume(studentId);
+      setMessage(null);
+
+      const formData = new FormData();
+      formData.append("resume", file);
+
+      await apiClient.post(`/hod/students/${studentId}/resume`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setMessage({
+        type: "success",
+        text: "Resume uploaded successfully",
+      });
+
+      // Refresh the list
+      await fetchStudents();
+    } catch (error: any) {
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to upload resume",
+      });
+    } finally {
+      setUploadingResume(null);
+    }
+  };
+
   const columns = [
     { header: "Roll Number", accessor: "roll_number", render: (value: string) => value || "-" },
     { header: "Name", accessor: "full_name" },
@@ -82,6 +123,45 @@ export default function StudentsPage() {
     { header: "Section", accessor: "section", render: (value: string) => value || "-" },
     { header: "Email", accessor: "email" },
     { header: "Phone", accessor: "phone", render: (value: string) => value || "-" },
+    {
+      header: "Resume",
+      accessor: "resume_url",
+      render: (value: string, row: Student) => {
+        const fileInputId = `resume-${row.id}`;
+        return (
+          <div className="flex items-center gap-2">
+            {value ? (
+              <span className="text-xs text-green-600">✓ Uploaded</span>
+            ) : (
+              <span className="text-xs text-gray-400">Not uploaded</span>
+            )}
+            <label
+              htmlFor={fileInputId}
+              className={`text-xs px-2 py-1 rounded cursor-pointer ${
+                uploadingResume === row.id
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-indigo-600 text-white hover:bg-indigo-700"
+              }`}
+            >
+              {uploadingResume === row.id ? "Uploading..." : "Upload"}
+            </label>
+            <input
+              id={fileInputId}
+              type="file"
+              accept=".pdf"
+              className="hidden"
+              disabled={uploadingResume === row.id}
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  handleResumeUpload(row.id, e.target.files[0]);
+                  e.target.value = ""; // Reset input
+                }
+              }}
+            />
+          </div>
+        );
+      },
+    },
     {
       header: "Created",
       accessor: "created_at",

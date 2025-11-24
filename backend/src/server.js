@@ -45,9 +45,19 @@ import authSignup from "./routes/auth/signup.js";
 import authCheckProfile from "./routes/auth/check-profile.js";
 import authCreateProfile from "./routes/auth/create-profile.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve uploaded files (resumes, etc.) - must be before other routes
+const uploadsPath = path.resolve(__dirname, "../uploads");
+app.use("/uploads", express.static(uploadsPath));
 
 // Request logging middleware
 app.use((req, res, next) => {

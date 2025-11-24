@@ -2,6 +2,7 @@
 import express from "express";
 import multer from "multer";
 import fs from "fs";
+import path from "path";
 import csvParser from "csv-parser";
 import XLSX from "xlsx";
 import { query } from "../../config/db.js";
@@ -93,10 +94,85 @@ router.post("/upload", requireAuth, requireHOD, upload.single("file"), async (re
   }
 });
 
+// Upload resume for a specific student
+router.post("/:studentId/resume", requireAuth, requireHOD, upload.single("resume"), async (req, res) => {
+  if (!req.file) return res.status(400).json({ message: "Resume file required" });
+  
+  const { studentId } = req.params;
+  const filePath = req.file.path;
+  const ext = (req.file.originalname.split(".").pop() || "").toLowerCase();
+  
+  // Only allow PDF files
+  if (ext !== "pdf") {
+    fs.unlinkSync(filePath);
+    return res.status(400).json({ message: "Only PDF files are allowed" });
+  }
+
+  try {
+    // Verify student belongs to HOD's department
+    const studentCheck = await query(
+      `SELECT id, department FROM campus360_dev.profiles WHERE id = $1 AND role = 'student'`,
+      [studentId]
+    );
+
+    if (studentCheck.rows.length === 0) {
+      fs.unlinkSync(filePath);
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    if (studentCheck.rows[0].department !== req.department) {
+      fs.unlinkSync(filePath);
+      return res.status(403).json({ message: "Student does not belong to your department" });
+    }
+
+    // Generate a unique filename
+    const uniqueFilename = `resume_${studentId}_${Date.now()}.pdf`;
+    const newPath = path.join("uploads", "resumes", uniqueFilename);
+    
+    // Create resumes directory if it doesn't exist
+    const resumesDir = path.join("uploads", "resumes");
+    if (!fs.existsSync(resumesDir)) {
+      fs.mkdirSync(resumesDir, { recursive: true });
+    }
+
+    // Move file to resumes directory
+    fs.renameSync(filePath, newPath);
+
+    // Delete old resume if exists
+    const oldResume = await query(
+      `SELECT resume_url FROM campus360_dev.profiles WHERE id = $1`,
+      [studentId]
+    );
+    
+    if (oldResume.rows[0]?.resume_url && fs.existsSync(oldResume.rows[0].resume_url)) {
+      try {
+        fs.unlinkSync(oldResume.rows[0].resume_url);
+      } catch (err) {
+        console.warn("Failed to delete old resume:", err);
+      }
+    }
+
+    // Update student profile with resume path
+    await query(
+      `UPDATE campus360_dev.profiles SET resume_url = $1 WHERE id = $2`,
+      [newPath, studentId]
+    );
+
+    res.json({ 
+      message: "Resume uploaded successfully", 
+      resume_url: newPath 
+    });
+  } catch (err) {
+    console.error("Resume upload error:", err);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    res.status(500).json({ message: "Failed to upload resume", error: err.message });
+  }
+});
+
 router.get("/", requireAuth, requireHOD, async (req, res) => {
   try {
     const r = await query(
-      `SELECT id, full_name, email, phone, academic_year, student_year, section, roll_number, created_at 
+      `SELECT id, full_name, email, phone, academic_year, student_year, section, roll_number, resume_url, created_at 
        FROM campus360_dev.profiles 
        WHERE department = $1 AND role='student' 
        ORDER BY academic_year DESC NULLS LAST, student_year, section, roll_number, full_name`,
