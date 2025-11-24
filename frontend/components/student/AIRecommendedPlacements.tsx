@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { PlacementCard } from "./PlacementCard";
 import apiClient from "@/lib/axios";
 import Link from "next/link";
@@ -43,8 +44,9 @@ export function AIRecommendedPlacements() {
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          🤖 AI Recommended for You
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_student/AI Recommendatons.png" alt="AI Recommended" width={24} height={24} />
+          AI Recommended for You
         </h3>
         <div className="text-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
@@ -57,8 +59,9 @@ export function AIRecommendedPlacements() {
   if (error) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          🤖 AI Recommended for You
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_student/AI Recommendatons.png" alt="AI Recommended" width={24} height={24} />
+          AI Recommended for You
         </h3>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">{error}</p>
@@ -73,8 +76,9 @@ export function AIRecommendedPlacements() {
   if (recommendations.length === 0) {
     return (
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          🤖 AI Recommended for You
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_student/AI Recommendatons.png" alt="AI Recommended" width={24} height={24} />
+          AI Recommended for You
         </h3>
         <div className="text-center py-8">
           <p className="text-sm text-gray-500">
@@ -92,11 +96,12 @@ export function AIRecommendedPlacements() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        🤖 AI Recommended for You
-      </h3>
-      <p className="text-sm text-gray-500 mb-4">
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_student/AI Recommendatons.png" alt="AI Recommended" width={24} height={24} />
+          AI Recommended for You
+        </h3>
+        <p className="text-sm text-gray-500 mb-4">
         Based on your skills and profile, here are the best matches for you
       </p>
       <div className="space-y-4">
