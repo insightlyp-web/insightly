@@ -6,18 +6,18 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Dashboard", href: "/student/dashboard", icon: "📊" },
-  { name: "Courses", href: "/student/courses", icon: "📚" },
-  { name: "Resume Analysis", href: "/student/resume", icon: "📄" },
-  { name: "Attendance Summary", href: "/student/attendance/summary", icon: "📈" },
-  { name: "Attendance History", href: "/student/attendance/history", icon: "📅" },
-  { name: "Scan QR", href: "/student/attendance/scan", icon: "📷" },
-  { name: "Today's Timetable", href: "/student/timetable/today", icon: "⏰" },
-  { name: "Weekly Timetable", href: "/student/timetable/week", icon: "📆" },
-  { name: "Placement Posts", href: "/student/placement/posts", icon: "💼" },
-  { name: "My Applications", href: "/student/placement/applications", icon: "📝" },
-  { name: "Notifications", href: "/student/notifications", icon: "🔔" },
-  { name: "Events", href: "/student/events", icon: "🎉" },
+  { name: "Dashboard", href: "/student/dashboard", icon: "/icons_student/Dashboard.png" },
+  { name: "Courses", href: "/student/courses", icon: "/icons_student/Courses.png" },
+  { name: "Resume Analysis", href: "/student/resume", icon: "/icons_student/Resume Analysis.png" },
+  { name: "Attendance Summary", href: "/student/attendance/summary", icon: "/icons_student/Attendance Summary.png" },
+  { name: "Attendance History", href: "/student/attendance/history", icon: "/icons_student/Attendance History.png" },
+  { name: "Scan QR", href: "/student/attendance/scan", icon: "/icons_student/Scan QR.png" },
+  { name: "Today's Timetable", href: "/student/timetable/today", icon: "/icons_student/Today's Timetable.png" },
+  { name: "Weekly Timetable", href: "/student/timetable/week", icon: "/icons_student/Weekly Timetable.png" },
+  { name: "Placement Posts", href: "/student/placement/posts", icon: "/icons_student/Placement Posts.png" },
+  { name: "My Applications", href: "/student/placement/applications", icon: "/icons_student/My Applications.png" },
+  { name: "Notifications", href: "/student/notifications", icon: "/icons_student/Notifications.png" },
+  { name: "Events", href: "/student/events", icon: "/icons_student/Events.png" },
 ];
 
 export function Sidebar() {
@@ -46,7 +46,13 @@ export function Sidebar() {
                 }
               `}
             >
-              <span className="mr-3 text-lg">{item.icon}</span>
+              <Image 
+                src={item.icon} 
+                alt={item.name} 
+                width={20} 
+                height={20} 
+                className="mr-3"
+              />
               {item.name}
             </Link>
           );

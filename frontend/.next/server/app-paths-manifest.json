@@ -1,1 +1,8 @@
-{}
+{
+  "/student/placement/posts/page": "app/student/placement/posts/page.js",
+  "/student/placement/applications/page": "app/student/placement/applications/page.js",
+  "/student/notifications/page": "app/student/notifications/page.js",
+  "/student/events/page": "app/student/events/page.js",
+  "/student/dashboard/page": "app/student/dashboard/page.js",
+  "/student/resume/page": "app/student/resume/page.js"
+}
