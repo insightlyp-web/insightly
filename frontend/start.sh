@@ -2,7 +2,7 @@
 # Start the Next.js frontend
 
 echo "=========================================="
-echo "Starting CampusAI Frontend"
+echo "Starting Insightly Frontend"
 echo "=========================================="
 echo ""
 

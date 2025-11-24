@@ -38,7 +38,12 @@ export default function PostDetailPage() {
     const fetchPost = async () => {
       try {
         const response = await apiClient.get(`/admin/placement/posts/${postId}`);
-        setPost(response.data.post);
+        const postData = response.data.post;
+        // Transform backend data to match frontend form expectations
+        setPost({
+          ...postData,
+          company: postData.company_name || postData.company, // Map 'company_name' to 'company'
+        });
       } catch (err: any) {
         setError(err.response?.data?.message || "Failed to fetch post");
       } finally {
@@ -54,7 +59,19 @@ export default function PostDetailPage() {
     setError("");
 
     try {
-      await apiClient.put(`/admin/placement/posts/${postId}`, data);
+      // Transform frontend data to match backend API expectations
+      const payload = {
+        title: data.title,
+        company_name: data.company, // Map 'company' to 'company_name'
+        job_type: data.job_type,
+        package: data.package,
+        required_skills: data.required_skills,
+        deadline: data.deadline,
+        description: data.description,
+        active: data.active,
+      };
+      
+      await apiClient.put(`/admin/placement/posts/${postId}`, payload);
       router.push("/admin/posts");
     } catch (err: any) {
       setError(err.response?.data?.message || "Failed to update post");

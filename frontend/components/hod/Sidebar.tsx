@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navigation = [
@@ -19,8 +20,9 @@ export function Sidebar() {
 
   return (
     <div className="flex h-screen w-64 flex-col bg-white border-r border-gray-200">
-      <div className="flex h-16 items-center px-6 border-b border-gray-200">
-        <h1 className="text-xl font-bold text-gray-900">CampusAI</h1>
+      <div className="flex h-16 items-center gap-3 px-6 border-b border-gray-200">
+        <Image src="/logo.png" alt="Insightly Logo" width={32} height={32} className="rounded" />
+        <h1 className="text-xl font-bold text-gray-900">Insightly</h1>
       </div>
       <nav className="flex-1 space-y-1 px-3 py-4">
         {navigation.map((item) => {

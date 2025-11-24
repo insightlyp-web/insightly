@@ -2,6 +2,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 
 interface HeaderProps {
@@ -26,15 +27,18 @@ export function Header({ userName, currentPage }: HeaderProps) {
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="flex h-16 items-center justify-between px-6">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900">
-            {getPageTitle()}
-          </h2>
-          <div className="flex items-center gap-2">
-            <p className="text-sm text-gray-500">Welcome, {userName}</p>
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
-              Placement Officer
-            </span>
+        <div className="flex items-center gap-3">
+          <Image src="/logo.png" alt="Insightly Logo" width={28} height={28} className="rounded" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Insightly Dashboard
+            </h2>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-gray-500">Welcome, {userName}</p>
+              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                Placement Officer
+              </span>
+            </div>
           </div>
         </div>
         <button

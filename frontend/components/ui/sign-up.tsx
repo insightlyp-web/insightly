@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface LightSignUpProps {
   onSubmit: (email: string, password: string, fullName: string, department: string, role: string) => Promise<void>;
@@ -28,12 +29,15 @@ export function LightSignUp({ onSubmit, error, loading }: LightSignUpProps) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-white px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <div className="text-center">
+          <div className="flex justify-center mb-4">
+            <Image src="/logo.png" alt="Insightly Logo" width={64} height={64} className="rounded-lg" />
+          </div>
+          <h2 className="mt-6 text-3xl font-bold tracking-tight text-gray-900">
             Create Account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sign up for CampusAI
+          <p className="mt-2 text-sm text-gray-600">
+            Sign up for Insightly
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

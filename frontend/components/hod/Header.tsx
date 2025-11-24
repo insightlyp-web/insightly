@@ -2,6 +2,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface HeaderProps {
   department: string;
@@ -19,11 +20,14 @@ export function Header({ department, userName }: HeaderProps) {
   return (
     <header className="bg-white border-b border-gray-200">
       <div className="flex h-16 items-center justify-between px-6">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900">
-            {department} Department
-          </h2>
-          <p className="text-sm text-gray-500">Welcome, {userName}</p>
+        <div className="flex items-center gap-3">
+          <Image src="/logo.png" alt="Insightly Logo" width={28} height={28} className="rounded" />
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              Insightly Dashboard
+            </h2>
+            <p className="text-sm text-gray-500">Welcome, {userName}</p>
+          </div>
         </div>
         <button
           onClick={handleLogout}

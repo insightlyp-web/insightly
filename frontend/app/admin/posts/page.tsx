@@ -47,7 +47,12 @@ export default function PostsPage() {
       const response = await apiClient.get(
         `/admin/placement/posts?${params.toString()}`
       );
-      setPosts(response.data.posts || []);
+      // Transform backend data to match frontend expectations
+      const transformedPosts = (response.data.posts || []).map((post: any) => ({
+        ...post,
+        company: post.company_name || post.company, // Map 'company_name' to 'company'
+      }));
+      setPosts(transformedPosts);
     } catch (error: any) {
       console.error("Failed to fetch posts:", error);
     } finally {
