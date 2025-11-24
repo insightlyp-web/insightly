@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/hod/Sidebar";
 import { Header } from "@/components/hod/Header";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Profile {
   id: string;
@@ -93,7 +94,7 @@ export default function HODLayout({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600" />
           <p className="mt-2 text-sm text-gray-500">Loading...</p>
         </div>
       </div>

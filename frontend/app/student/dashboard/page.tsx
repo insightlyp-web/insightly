@@ -8,6 +8,7 @@ import { PlacementCard } from "@/components/student/PlacementCard";
 import { AIRecommendedPlacements } from "@/components/student/AIRecommendedPlacements";
 import { AIAttendanceInsights } from "@/components/student/AIAttendanceInsights";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DashboardData {
   profile: {
@@ -107,7 +108,7 @@ export default function StudentDashboard() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <Spinner size={32} className="text-blue-600 mx-auto" />
       </div>
     );
   }

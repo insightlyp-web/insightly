@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/student/Sidebar";
 import { Header } from "@/components/student/Header";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Profile {
   id: string;
@@ -33,13 +34,13 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
     let isMounted = true;
     let timeoutId: NodeJS.Timeout | null = null;
-    
+
     console.log("Student layout: useEffect running, isMounted =", isMounted);
 
     const verify = async () => {
       try {
         console.log("Student layout: Starting profile verification...");
-        
+
         // Ensure we have a token before making the request
         const token = localStorage.getItem("access_token");
         if (!token) {
@@ -66,15 +67,15 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         console.log("Student layout: Calling /student/profile...");
         const response = await apiClient.get("/student/profile");
         console.log("Student layout: API response received:", response.data);
-        
+
         if (timeoutId) clearTimeout(timeoutId);
-        
+
         // Don't check isMounted/cancelled here - React will handle unmounted state updates gracefully
         // If component unmounted, React will ignore the state update, but we should still try
         // This prevents the "Component cancelled, aborting" issue in StrictMode
 
         const userProfile = response.data?.profile;
-        
+
         if (!userProfile) {
           console.error("No profile in response:", response.data);
           if (!hasRedirected.current) {
@@ -104,7 +105,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         }
 
         console.log("Profile loaded successfully:", userProfile);
-        
+
         // Always try to set state - React will ignore if component unmounted
         // This is safe even in StrictMode double-render scenarios
         try {
@@ -142,7 +143,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         } else if (error.response?.status === 403) {
           // Forbidden - wrong role
           const currentRole = error.response?.data?.currentRole;
-          
+
           // Redirect based on actual role from error response
           if (currentRole === "hod") {
             router.replace("/hod/dashboard");
@@ -163,7 +164,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
           // Other errors - always set loading to false
           console.error("Student layout error - setting loading to false");
           setLoading(false);
-          
+
           // For network errors, don't redirect immediately
           if (error.code === 'ERR_NETWORK' || !error.response) {
             // Network error - show error but don't redirect
@@ -190,7 +191,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600 mx-auto" />
           <p className="mt-2 text-sm text-gray-500">Loading...</p>
         </div>
       </div>

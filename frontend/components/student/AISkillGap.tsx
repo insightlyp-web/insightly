@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 import apiClient from "@/lib/axios";
 import { useRouter } from "next/navigation";
 
@@ -47,7 +48,7 @@ export function AISkillGap({ postId, postTitle }: AISkillGapProps) {
           🎯 AI Skill Gap Analysis
         </h3>
         <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
+          <Spinner size={32} className="text-indigo-600 mx-auto" />
           <p className="mt-2 text-sm text-gray-500">Analyzing your skills...</p>
         </div>
       </div>

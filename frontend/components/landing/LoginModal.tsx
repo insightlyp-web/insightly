@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Loader2 } from "lucide-react";
+import { X } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 interface LoginModalProps {
     isOpen: boolean;
@@ -87,7 +88,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                 >
                                     {isLoading ? (
                                         <>
-                                            <Loader2 className="w-5 h-5 animate-spin" />
+                                            <Spinner size={20} />
                                             Signing in...
                                         </>
                                     ) : (

@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { QRScanner } from "@/components/student/QRScanner";
 import { Card } from "@/components/student/Card";
 import apiClient from "@/lib/axios";
-import { CheckCircle, XCircle, Loader2, ArrowLeft } from "lucide-react";
+import { CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ScanQRPage() {
@@ -68,7 +69,7 @@ export default function ScanQRPage() {
               exit={{ opacity: 0 }}
               className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm text-white"
             >
-              <Loader2 className="w-12 h-12 animate-spin text-brand-cyan mb-4" />
+              <Spinner size={48} className="text-brand-cyan mb-4" />
               <p className="text-lg font-medium">Verifying QR Code...</p>
             </motion.div>
           )}

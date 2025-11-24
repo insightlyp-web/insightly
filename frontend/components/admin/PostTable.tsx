@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 import { Card } from "../hod/Card";
 
@@ -40,7 +41,7 @@ export function PostTable({ posts, onDelete, loading }: PostTableProps) {
     return (
       <Card>
         <div className="flex items-center justify-center p-6">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600 mx-auto" />
           <p className="ml-3 text-gray-500">Loading posts...</p>
         </div>
       </Card>

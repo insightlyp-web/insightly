@@ -7,6 +7,7 @@ import { Card } from "@/components/hod/Card";
 import { AIAtRiskStudents } from "@/components/hod/AIAtRiskStudents";
 import { AISkillGap } from "@/components/hod/AISkillGap";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function HODDashboard() {
   const [stats, setStats] = useState({
@@ -66,7 +67,7 @@ export default function HODDashboard() {
 
       {loading ? (
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600" />
         </div>
       ) : (
         <>
