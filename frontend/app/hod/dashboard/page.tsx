@@ -49,10 +49,10 @@ export default function HODDashboard() {
   }, []);
 
   const statsData = [
-    { name: "Total Students", value: stats.students, icon: "👥" },
-    { name: "Total Faculty", value: stats.faculty, icon: "👨‍🏫" },
-    { name: "Total Courses", value: stats.courses, icon: "📚" },
-    { name: "Timetable Entries", value: stats.timetable, icon: "📅" },
+    { name: "Total Students", value: stats.students, icon: "/icons_hod/Students.png" },
+    { name: "Total Faculty", value: stats.faculty, icon: "/icons_hod/Faculty.png" },
+    { name: "Total Courses", value: stats.courses, icon: "/icons_hod/Courses.png" },
+    { name: "Timetable Entries", value: stats.timetable, icon: "/icons_hod/Timetable.png" },
   ];
 
   return (

@@ -1,4 +1,5 @@
 // components/hod/StatsGrid.tsx
+import Image from "next/image";
 import { Card } from "./Card";
 
 interface Stat {
@@ -18,7 +19,12 @@ export function StatsGrid({ stats }: StatsGridProps) {
         <Card key={stat.name}>
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <span className="text-3xl">{stat.icon}</span>
+              <Image 
+                src={stat.icon} 
+                alt={stat.name} 
+                width={32} 
+                height={32}
+              />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-500">{stat.name}</p>
