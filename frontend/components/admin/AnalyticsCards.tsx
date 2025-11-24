@@ -1,4 +1,5 @@
 // components/admin/AnalyticsCards.tsx
+import Image from "next/image";
 import { StatCard } from "./StatCard";
 
 interface AnalyticsCardsProps {
@@ -18,13 +19,13 @@ export function AnalyticsCards({
         title="Total Posts"
         value={totalPosts}
         description="All placement posts"
-        icon={<span className="text-2xl">📝</span>}
+        icon={<Image src="/icons_admin/Posts.png" alt="Total Posts" width={24} height={24} />}
       />
       <StatCard
         title="Total Applications"
         value={totalApplications}
         description="All student applications"
-        icon={<span className="text-2xl">📋</span>}
+        icon={<Image src="/icons_admin/Applications.png" alt="Total Applications" width={24} height={24} />}
       />
       {statusBreakdown?.map((item) => (
         <StatCard

@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { StatCard } from "@/components/admin/StatCard";
 import { Card } from "@/components/hod/Card";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
@@ -73,13 +74,13 @@ export default function AnalyticsOverviewPage() {
           title="Total Posts"
           value={data?.total_posts || 0}
           description="All placement posts"
-          icon={<span className="text-2xl">📝</span>}
+          icon={<Image src="/icons_admin/Posts.png" alt="Total Posts" width={24} height={24} />}
         />
         <StatCard
           title="Total Applications"
           value={data?.total_applications || 0}
           description="All student applications"
-          icon={<span className="text-2xl">📋</span>}
+          icon={<Image src="/icons_admin/Applications.png" alt="Total Applications" width={24} height={24} />}
         />
         <StatCard
           title="Active Posts"

@@ -6,12 +6,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const navigation = [
-  { name: "Dashboard", href: "/faculty/dashboard", icon: "📊" },
-  { name: "Courses", href: "/faculty/courses", icon: "📚" },
-  { name: "Create Session", href: "/faculty/attendance/create", icon: "➕" },
-  { name: "Sessions History", href: "/faculty/attendance/sessions", icon: "📅" },
-  { name: "Assessments", href: "/faculty/marks/assessments", icon: "📝" },
-  { name: "Create Assessment", href: "/faculty/marks/assessments/create", icon: "✏️" },
+  { name: "Dashboard", href: "/faculty/dashboard", icon: "/icons_faculty/Dashboard.png" },
+  { name: "Courses", href: "/faculty/courses", icon: "/icons_faculty/Courses.png" },
+  { name: "Create Session", href: "/faculty/attendance/create", icon: "/icons_faculty/Create Session.png" },
+  { name: "Sessions History", href: "/faculty/attendance/sessions", icon: "/icons_faculty/Sessions History.png" },
+  { name: "Assessments", href: "/faculty/marks/assessments", icon: "/icons_faculty/Assessments.png" },
+  { name: "Create Assessment", href: "/faculty/marks/assessments/create", icon: "/icons_faculty/Create Assessment.png" },
 ];
 
 export function Sidebar() {
@@ -40,7 +40,13 @@ export function Sidebar() {
                 }
               `}
             >
-              <span className="mr-3 text-lg">{item.icon}</span>
+              <Image 
+                src={item.icon} 
+                alt={item.name} 
+                width={20} 
+                height={20} 
+                className="mr-3"
+              />
               {item.name}
             </Link>
           );
