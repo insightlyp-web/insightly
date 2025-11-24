@@ -1,8 +1,7 @@
 {
-  "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/faculty/dashboard/page": "app/faculty/dashboard/page.js",
-  "/student/timetable/today/page": "app/student/timetable/today/page.js",
-  "/admin/dashboard/page": "app/admin/dashboard/page.js",
-  "/admin/posts/page": "app/admin/posts/page.js",
-  "/hod/dashboard/page": "app/hod/dashboard/page.js"
+  "/hod/dashboard/page": "app/hod/dashboard/page.js",
+  "/hod/courses/page": "app/hod/courses/page.js",
+  "/hod/courses/map/page": "app/hod/courses/map/page.js",
+  "/hod/timetable/page": "app/hod/timetable/page.js",
+  "/hod/attendance/page": "app/hod/attendance/page.js"
 }

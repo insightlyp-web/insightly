@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import apiClient from "@/lib/axios";
 import { Card } from "@/components/hod/Card";
 
@@ -56,8 +57,9 @@ export function AIAtRiskStudents() {
   if (loading) {
     return (
       <Card>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          ⚠️ Students At Risk ({students.length})
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_hod/Student Risk.png" alt="Students At Risk" width={24} height={24} />
+          Students At Risk ({students.length})
         </h3>
         <div className="text-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto"></div>
@@ -70,8 +72,9 @@ export function AIAtRiskStudents() {
   if (error) {
     return (
       <Card>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          ⚠️ Students At Risk
+        <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <Image src="/icons_hod/Student Risk.png" alt="Students At Risk" width={24} height={24} />
+          Students At Risk
         </h3>
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
           <p className="text-sm text-yellow-800">{error}</p>
@@ -90,8 +93,9 @@ export function AIAtRiskStudents() {
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">
-          ⚠️ Students At Risk ({filteredStudents.length})
+        <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+          <Image src="/icons_hod/Student Risk.png" alt="Students At Risk" width={24} height={24} />
+          Students At Risk ({filteredStudents.length})
         </h3>
         <div className="flex gap-2">
           <button
