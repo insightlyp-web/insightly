@@ -8,4 +8,11 @@
   "/student/courses/page": "app/student/courses/page.js",
   "/student/attendance/history/page": "app/student/attendance/history/page.js",
   "/student/resume/page": "app/student/resume/page.js"
+  "/student/dashboard/page": "app/student/dashboard/page.js",
+  "/student/attendance/scan/page": "app/student/attendance/scan/page.js",
+  "/student/attendance/history/page": "app/student/attendance/history/page.js",
+  "/student/courses/page": "app/student/courses/page.js",
+  "/student/resume/page": "app/student/resume/page.js",
+  "/student/attendance/summary/page": "app/student/attendance/summary/page.js",
+  "/student/timetable/today/page": "app/student/timetable/today/page.js"
 }

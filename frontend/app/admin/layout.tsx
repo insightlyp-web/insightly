@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/admin/Sidebar";
 import { Header } from "@/components/admin/Header";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Profile {
   id: string;
@@ -77,7 +78,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600" />
           <p className="mt-2 text-sm text-gray-500">Checking admin access...</p>
         </div>
       </div>

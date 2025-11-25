@@ -1,5 +1,6 @@
 // components/faculty/Table.tsx
 import { Card } from "./Card";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Column {
   header: string;
@@ -18,7 +19,7 @@ export function Table({ columns, data, loading }: TableProps) {
     return (
       <Card>
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600 mx-auto" />
           <p className="mt-2 text-sm text-gray-500">Loading...</p>
         </div>
       </Card>

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Card } from "@/components/faculty/Card";
 import { Table } from "@/components/faculty/Table";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Stats {
   courses: number;
@@ -107,7 +108,7 @@ export default function FacultyDashboard() {
 
       {loading ? (
         <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600" />
         </div>
       ) : (
         <>

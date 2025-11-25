@@ -7,6 +7,7 @@ import Image from "next/image";
 import { StatCard } from "@/components/admin/StatCard";
 import { Card } from "@/components/hod/Card";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 import Link from "next/link";
 
 interface OverviewData {
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
     return (
       <div className="flex items-center justify-center p-12">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <Spinner size={32} className="text-blue-600" />
           <p className="mt-2 text-sm text-gray-500">Loading dashboard...</p>
         </div>
       </div>

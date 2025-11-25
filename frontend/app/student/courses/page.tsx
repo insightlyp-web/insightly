@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/student/Card";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface Course {
   id: string;
@@ -44,7 +45,7 @@ export default function CoursesPage() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <Spinner size={32} className="text-blue-600 mx-auto" />
       </div>
     );
   }

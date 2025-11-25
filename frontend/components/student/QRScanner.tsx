@@ -31,7 +31,7 @@ export function QRScanner({ onScan, loading }: QRScannerProps) {
       try {
         // Dynamically import html5-qrcode (client-side only)
         const { Html5Qrcode } = await import("html5-qrcode");
-        
+
         html5QrCode = new Html5Qrcode("qr-reader");
         scannerRef.current = html5QrCode;
 
@@ -43,20 +43,20 @@ export function QRScanner({ onScan, loading }: QRScannerProps) {
           },
           (decodedText: string) => {
             if (!isMounted || !scanning || loading) return;
-            
+
             setScanning(false);
             setError("");
-            
+
             html5QrCode?.stop().then(() => {
               onScan(decodedText).catch((err: any) => {
                 if (isMounted) {
                   setError(err.message || "Failed to mark attendance");
                   setScanning(true);
                   // Restart scanner
-                  startScanner().catch(() => {});
+                  startScanner().catch(() => { });
                 }
               });
-            }).catch(() => {});
+            }).catch(() => { });
           },
           (errorMessage: string) => {
             // Ignore scanning errors (continuous scanning)
@@ -75,7 +75,16 @@ export function QRScanner({ onScan, loading }: QRScannerProps) {
     return () => {
       isMounted = false;
       if (html5QrCode) {
-        html5QrCode.stop().catch(() => {});
+        // Check if scanner is actually running before trying to stop it
+        try {
+          const state = html5QrCode.getState();
+          // Only stop if scanner is in SCANNING or PAUSED state
+          if (state === 2 || state === 3) { // 2 = SCANNING, 3 = PAUSED
+            html5QrCode.stop().catch(() => { });
+          }
+        } catch (e) {
+          // Ignore errors during cleanup
+        }
       }
     };
   }, [loading, scanning, isClient, onScan]);

@@ -14,6 +14,7 @@ const navigation = [
   { name: "Timetable", href: "/hod/timetable", icon: "/icons_hod/Timetable.png" },
   { name: "Attendance Analytics", href: "/hod/attendance", icon: "/icons_hod/Attendance Analytics.png" },
   { name: "Upload Excel", href: "/hod/upload-excel", icon: "/icons_hod/Dashboard.png" },
+  { name: "Report", href: "/hod/report", icon: "/icons_hod/Report.png" },
 ];
 
 export function Sidebar() {

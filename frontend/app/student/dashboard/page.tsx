@@ -8,6 +8,7 @@ import { PlacementCard } from "@/components/student/PlacementCard";
 import { AIRecommendedPlacements } from "@/components/student/AIRecommendedPlacements";
 import { AIAttendanceInsights } from "@/components/student/AIAttendanceInsights";
 import apiClient from "@/lib/axios";
+import { Spinner } from "@/components/ui/spinner";
 
 interface DashboardData {
   profile: {
@@ -18,7 +19,7 @@ interface DashboardData {
     academic_year?: string;
     student_year?: string;
     roll_number?: string;
-  };
+  } | null;
   attendance_summary: {
     present_count: number;
   };
@@ -39,6 +40,7 @@ interface DashboardData {
     job_type: string;
     package?: string;
     deadline?: string;
+    created_at: string;
   }>;
 }
 
@@ -61,15 +63,18 @@ export default function StudentDashboard() {
       setLoading(true);
       const response = await apiClient.get("/student/dashboard");
       console.log("Dashboard API response:", response.data);
-      
+
       // Transform response to match expected format
       const transformedData: DashboardData = {
         profile: response.data.profile || null,
         attendance_summary: response.data.attendance_summary || { present_count: 0 },
         today_timetable: response.data.today_timetable || response.data.timetable || [],
-        recent_placements: response.data.recent_placements || [],
+        recent_placements: (response.data.recent_placements || []).map((p: any) => ({
+          ...p,
+          created_at: p.created_at || new Date().toISOString()
+        })),
       };
-      
+
       // Validate that profile exists
       if (!transformedData.profile) {
         console.error("Profile missing from dashboard response:", response.data);
@@ -83,7 +88,7 @@ export default function StudentDashboard() {
           console.error("Failed to fetch profile separately:", profileError);
         }
       }
-      
+
       setData(transformedData);
     } catch (error: any) {
       console.error("Failed to fetch dashboard data:", error);
@@ -102,7 +107,7 @@ export default function StudentDashboard() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <Spinner size={32} className="text-blue-600 mx-auto" />
       </div>
     );
   }

@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { Spinner } from "@/components/ui/spinner";
 import { Card } from "@/components/student/Card";
 import apiClient from "@/lib/axios";
 
@@ -42,7 +43,7 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="text-center py-8">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <Spinner size={32} className="text-blue-600 mx-auto" />
       </div>
     );
   }
