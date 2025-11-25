@@ -15,6 +15,8 @@ import timetableRoute from "./routes/hod/timetable.js";
 import attendanceRoute from "./routes/hod/attendance.js";
 import hodProfileRoute from "./routes/hod/profile.js";
 import hodAI from "./routes/hod/ai.js";
+import uploadExcelRoute from "./routes/hod/uploadExcel.js";
+import confirmUploadRoute from "./routes/hod/confirmUpload.js";
 
 
 import studentProfile from "./routes/student/profile.js";
@@ -99,6 +101,8 @@ app.use("/hod/timetable", timetableRoute);
 app.use("/hod/analytics", analyticsRoute);
 app.use("/hod/attendance", attendanceRoute);
 app.use("/hod/ai", hodAI);
+app.use("/hod/upload-excel", uploadExcelRoute);
+app.use("/hod/confirm-upload", confirmUploadRoute);
 app.use("/student/profile", studentProfile);
 app.use("/student/attendance", studentAttendance);
 app.use("/student/timetable", studentTimetable);

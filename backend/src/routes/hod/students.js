@@ -49,35 +49,25 @@ router.post("/upload", requireAuth, requireHOD, upload.single("file"), async (re
       const phone = (row.phone || row["Phone"] || "").trim() || null;
       const academic_year = (row.academic_year || row["Academic Year"] || row["Academic_Year"] || "").trim() || null;
       const student_year = (row.student_year || row["Student Year"] || row["Student_Year"] || row.year || "").trim().toUpperCase() || null;
-      const section = (row.section || row["Section"] || "").trim().toUpperCase() || null;
       const roll_number = (row.roll_number || row["Roll Number"] || row["Roll_Number"] || row.rollno || row.roll || "").trim() || null;
       
       if (!full_name || !email) continue;
-
-      // Validate student_year
       if (student_year && !['I', 'II', 'III', 'IV'].includes(student_year)) {
         console.warn(`Invalid student_year "${student_year}" for ${full_name}, skipping...`);
         continue;
       }
 
-      // Validate section
-      if (section && !['A', 'B', 'C', 'D'].includes(section)) {
-        console.warn(`Invalid section "${section}" for ${full_name}, skipping...`);
-        continue;
-      }
-
       try {
         await query(
-          `INSERT INTO campus360_dev.profiles (id, full_name, email, role, department, phone, academic_year, student_year, section, roll_number)
+          `INSERT INTO campus360_dev.profiles (id, full_name, email, role, department, phone, academic_year, student_year, roll_number)
            VALUES (gen_random_uuid(), $1, $2, 'student', $3, $4, $5, $6, $7, $8)
            ON CONFLICT (email) DO UPDATE SET 
              full_name = EXCLUDED.full_name, 
              phone = EXCLUDED.phone,
              academic_year = EXCLUDED.academic_year,
              student_year = EXCLUDED.student_year,
-             section = EXCLUDED.section,
              roll_number = EXCLUDED.roll_number`,
-          [full_name, email, req.department, phone, academic_year, student_year, section, roll_number]
+          [full_name, email, req.department, phone, academic_year, student_year, roll_number]
         );
         inserted++;
       } catch (err) {
@@ -172,10 +162,22 @@ router.post("/:studentId/resume", requireAuth, requireHOD, upload.single("resume
 router.get("/", requireAuth, requireHOD, async (req, res) => {
   try {
     const r = await query(
-      `SELECT id, full_name, email, phone, academic_year, student_year, section, roll_number, resume_url, created_at 
-       FROM campus360_dev.profiles 
-       WHERE department = $1 AND role='student' 
-       ORDER BY academic_year DESC NULLS LAST, student_year, section, roll_number, full_name`,
+      `SELECT 
+        p.id, 
+        p.full_name, 
+        p.email, 
+        p.phone, 
+        p.academic_year, 
+        p.student_year, 
+        p.roll_number, 
+        p.resume_url, 
+        p.created_at,
+        COUNT(e.id) AS subject_count
+       FROM campus360_dev.profiles p
+       LEFT JOIN campus360_dev.enrollments e ON e.student_id = p.id
+       WHERE p.department = $1 AND p.role='student' 
+       GROUP BY p.id, p.full_name, p.email, p.phone, p.academic_year, p.student_year, p.roll_number, p.resume_url, p.created_at
+       ORDER BY p.academic_year DESC NULLS LAST, p.student_year, p.roll_number, p.full_name`,
       [req.department]
     );
     res.json({ students: r.rows });

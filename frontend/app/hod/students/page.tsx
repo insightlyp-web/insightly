@@ -13,10 +13,10 @@ interface Student {
   phone: string;
   academic_year?: string;
   student_year?: string;
-  section?: string;
   roll_number?: string;
   resume_url?: string;
   created_at: string;
+  subject_count?: number;
 }
 
 export default function StudentsPage() {
@@ -120,9 +120,9 @@ export default function StudentsPage() {
     { header: "Name", accessor: "full_name" },
     { header: "Academic Year", accessor: "academic_year", render: (value: string) => value || "-" },
     { header: "Year", accessor: "student_year", render: (value: string) => value || "-" },
-    { header: "Section", accessor: "section", render: (value: string) => value || "-" },
     { header: "Email", accessor: "email" },
     { header: "Phone", accessor: "phone", render: (value: string) => value || "-" },
+    { header: "Subjects", accessor: "subject_count", render: (value: number) => value ? value.toString() : "0" },
     {
       header: "Resume",
       accessor: "resume_url",
@@ -192,7 +192,7 @@ export default function StudentsPage() {
 
       <UploadCard
         title="Upload Students"
-        description="Upload a CSV or Excel file with student data. Required columns: full_name, email. Optional: phone, academic_year (e.g., 2025-26), student_year (I/II/III/IV), section (A/B/C/D), roll_number"
+        description="Upload a CSV or Excel file with student data. Required columns: full_name, email. Optional: phone, academic_year (e.g., 2025-26), student_year (I/II/III/IV), roll_number"
         onUpload={handleUpload}
         loading={uploading}
       />
