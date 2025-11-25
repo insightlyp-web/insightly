@@ -15,6 +15,8 @@ import timetableRoute from "./routes/hod/timetable.js";
 import attendanceRoute from "./routes/hod/attendance.js";
 import hodProfileRoute from "./routes/hod/profile.js";
 import hodAI from "./routes/hod/ai.js";
+import uploadExcelRoute from "./routes/hod/uploadExcel.js";
+import confirmUploadRoute from "./routes/hod/confirmUpload.js";
 
 
 import studentProfile from "./routes/student/profile.js";
@@ -45,9 +47,19 @@ import authSignup from "./routes/auth/signup.js";
 import authCheckProfile from "./routes/auth/check-profile.js";
 import authCreateProfile from "./routes/auth/create-profile.js";
 
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve uploaded files (resumes, etc.) - must be before other routes
+const uploadsPath = path.resolve(__dirname, "../uploads");
+app.use("/uploads", express.static(uploadsPath));
 
 // Request logging middleware
 app.use((req, res, next) => {
@@ -89,6 +101,8 @@ app.use("/hod/timetable", timetableRoute);
 app.use("/hod/analytics", analyticsRoute);
 app.use("/hod/attendance", attendanceRoute);
 app.use("/hod/ai", hodAI);
+app.use("/hod/upload-excel", uploadExcelRoute);
+app.use("/hod/confirm-upload", confirmUploadRoute);
 app.use("/student/profile", studentProfile);
 app.use("/student/attendance", studentAttendance);
 app.use("/student/timetable", studentTimetable);
