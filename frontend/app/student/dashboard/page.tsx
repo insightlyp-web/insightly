@@ -18,6 +18,7 @@ interface DashboardData {
     department: string;
     academic_year?: string;
     student_year?: string;
+    section?: string;
     roll_number?: string;
   } | null;
   attendance_summary: {
@@ -173,6 +174,12 @@ export default function StudentDashboard() {
               <div>
                 <p className="text-xs text-gray-500">Year</p>
                 <p className="text-sm font-medium text-gray-900">{profile.student_year}</p>
+              </div>
+            )}
+            {profile.section && (
+              <div>
+                <p className="text-xs text-gray-500">Section</p>
+                <p className="text-sm font-medium text-gray-900">{profile.section}</p>
               </div>
             )}
           </div>

@@ -12,7 +12,7 @@ router.get("/", requireAuth, requireStudent, async (req, res) => {
   try {
     // Profile - include all student fields
     const profile = await query(
-      `SELECT id, full_name, email, department, phone, academic_year, student_year, roll_number
+      `SELECT id, full_name, email, department, phone, academic_year, student_year, section, roll_number
        FROM campus360_dev.profiles 
        WHERE id=$1 AND role='student'`,
       [studentId]

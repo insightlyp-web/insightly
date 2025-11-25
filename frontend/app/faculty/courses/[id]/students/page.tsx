@@ -14,6 +14,7 @@ interface Student {
   phone?: string;
   academic_year?: string;
   student_year?: string;
+  section?: string;
   roll_number?: string;
   attendance_percentage?: number;
 }
@@ -49,6 +50,7 @@ export default function CourseStudentsPage() {
     { header: "Roll Number", accessor: "roll_number", render: (value: string) => value || "-" },
     { header: "Name", accessor: "full_name" },
     { header: "Year", accessor: "student_year", render: (value: string) => value || "-" },
+    { header: "Section", accessor: "section", render: (value: string) => value || "-" },
     { header: "Email", accessor: "email" },
     { header: "Phone", accessor: "phone", render: (value: string) => value || "-" },
     {

@@ -16,7 +16,7 @@ router.get("/risk", requireAuth, requireHOD, async (req, res) => {
 
     // Get all students in the department
     const studentsResult = await query(
-      `SELECT id, full_name, email, student_year, academic_year
+      `SELECT id, full_name, email, student_year, academic_year, section
        FROM campus360_dev.profiles
        WHERE role = 'student' AND department = $1`,
       [hodDepartment]
@@ -109,6 +109,7 @@ router.get("/risk", requireAuth, requireHOD, async (req, res) => {
             student_email: student.email,
             student_year: student.student_year,
             academic_year: student.academic_year,
+            section: student.section,
             ...mlResponse.data,
             attendance_percentage: attendance,
           });

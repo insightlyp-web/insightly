@@ -13,17 +13,15 @@ interface Student {
   phone: string;
   academic_year?: string;
   student_year?: string;
+  section?: string;
   roll_number?: string;
-  resume_url?: string;
   created_at: string;
-  subject_count?: number;
 }
 
 export default function StudentsPage() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [uploadingResume, setUploadingResume] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   useEffect(() => {
@@ -76,92 +74,14 @@ export default function StudentsPage() {
     }
   };
 
-  const handleResumeUpload = async (studentId: string, file: File) => {
-    if (file.type !== "application/pdf") {
-      setMessage({
-        type: "error",
-        text: "Please upload a PDF file",
-      });
-      return;
-    }
-
-    try {
-      setUploadingResume(studentId);
-      setMessage(null);
-
-      const formData = new FormData();
-      formData.append("resume", file);
-
-      await apiClient.post(`/hod/students/${studentId}/resume`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      setMessage({
-        type: "success",
-        text: "Resume uploaded successfully",
-      });
-
-      // Refresh the list
-      await fetchStudents();
-    } catch (error: any) {
-      setMessage({
-        type: "error",
-        text: error.response?.data?.message || "Failed to upload resume",
-      });
-    } finally {
-      setUploadingResume(null);
-    }
-  };
-
   const columns = [
     { header: "Roll Number", accessor: "roll_number", render: (value: string) => value || "-" },
     { header: "Name", accessor: "full_name" },
     { header: "Academic Year", accessor: "academic_year", render: (value: string) => value || "-" },
     { header: "Year", accessor: "student_year", render: (value: string) => value || "-" },
+    { header: "Section", accessor: "section", render: (value: string) => value || "-" },
     { header: "Email", accessor: "email" },
     { header: "Phone", accessor: "phone", render: (value: string) => value || "-" },
-    { header: "Subjects", accessor: "subject_count", render: (value: number) => value ? value.toString() : "0" },
-    {
-      header: "Resume",
-      accessor: "resume_url",
-      render: (value: string, row: Student) => {
-        const fileInputId = `resume-${row.id}`;
-        return (
-          <div className="flex items-center gap-2">
-            {value ? (
-              <span className="text-xs text-green-600">✓ Uploaded</span>
-            ) : (
-              <span className="text-xs text-gray-400">Not uploaded</span>
-            )}
-            <label
-              htmlFor={fileInputId}
-              className={`text-xs px-2 py-1 rounded cursor-pointer ${
-                uploadingResume === row.id
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
-              }`}
-            >
-              {uploadingResume === row.id ? "Uploading..." : "Upload"}
-            </label>
-            <input
-              id={fileInputId}
-              type="file"
-              accept=".pdf"
-              className="hidden"
-              disabled={uploadingResume === row.id}
-              onChange={(e) => {
-                if (e.target.files && e.target.files[0]) {
-                  handleResumeUpload(row.id, e.target.files[0]);
-                  e.target.value = ""; // Reset input
-                }
-              }}
-            />
-          </div>
-        );
-      },
-    },
     {
       header: "Created",
       accessor: "created_at",
@@ -192,7 +112,7 @@ export default function StudentsPage() {
 
       <UploadCard
         title="Upload Students"
-        description="Upload a CSV or Excel file with student data. Required columns: full_name, email. Optional: phone, academic_year (e.g., 2025-26), student_year (I/II/III/IV), roll_number"
+        description="Upload a CSV or Excel file with student data. Required columns: full_name, email. Optional: phone, academic_year (e.g., 2025-26), student_year (I/II/III/IV), section (A/B/C/D), roll_number"
         onUpload={handleUpload}
         loading={uploading}
       />

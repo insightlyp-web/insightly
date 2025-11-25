@@ -20,10 +20,8 @@ export default function ResumePage() {
   const [file, setFile] = useState<File | null>(null);
   const [parsedData, setParsedData] = useState<ParsedResume | null>(null);
   const [loading, setLoading] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +37,7 @@ export default function ResumePage() {
     }
   };
 
-  const handleAnalyze = async () => {
+  const handleUpload = async () => {
     if (!file) {
       setError("Please select a file");
       return;
@@ -49,7 +47,6 @@ export default function ResumePage() {
       setLoading(true);
       setError(null);
       setSuccess(false);
-      setSaveSuccess(false);
 
       const formData = new FormData();
       formData.append("resume", file);
@@ -63,39 +60,10 @@ export default function ResumePage() {
       setParsedData(response.data.data);
       setSuccess(true);
     } catch (err: any) {
-      console.error("Resume analyze error:", err);
+      console.error("Resume upload error:", err);
       setError(err.response?.data?.message || "Failed to analyze resume");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSave = async () => {
-    if (!file) {
-      setError("Please select a file");
-      return;
-    }
-
-    try {
-      setSaving(true);
-      setError(null);
-      setSaveSuccess(false);
-
-      const formData = new FormData();
-      formData.append("resume", file);
-
-      await apiClient.post("/student/ai/resume/save", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      setSaveSuccess(true);
-    } catch (err: any) {
-      console.error("Resume save error:", err);
-      setError(err.response?.data?.message || "Failed to save resume");
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -146,30 +114,13 @@ export default function ResumePage() {
             </div>
           )}
 
-          {saveSuccess && (
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <p className="text-sm text-green-800">
-                ✅ Resume saved successfully!
-              </p>
-            </div>
-          )}
-
-          <div className="flex gap-3">
-            <button
-              onClick={handleAnalyze}
-              disabled={!file || loading}
-              className="flex-1 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? "Analyzing..." : "Analyze Resume"}
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={!file || saving}
-              className="flex-1 rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saving ? "Saving..." : "Save Resume"}
-            </button>
-          </div>
+          <button
+            onClick={handleUpload}
+            disabled={!file || loading}
+            className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "Analyzing..." : "Analyze Resume"}
+          </button>
         </div>
       </Card>
 
