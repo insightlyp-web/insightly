@@ -13,7 +13,7 @@ router.get("/", requireAuth, requireStudent, async (req, res) => {
 
     // Fetch full student profile (include role for frontend verification)
     const r = await query(
-      `SELECT id, full_name, email, role, department, phone, academic_year, student_year, section, roll_number, created_at 
+      `SELECT id, full_name, email, role, department, phone, academic_year, student_year, roll_number, created_at 
        FROM campus360_dev.profiles 
        WHERE id=$1 AND role='student'`,
       [studentId]
