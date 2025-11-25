@@ -12,6 +12,9 @@ interface Course {
   name: string;
   department: string;
   year: number;
+  academic_year?: string;
+  semester?: number;
+  faculty_id?: string;
   faculty_name?: string;
 }
 
@@ -75,8 +78,29 @@ export default function CoursesPage() {
   const columns = [
     { header: "Code", accessor: "code" },
     { header: "Name", accessor: "name" },
-    { header: "Year", accessor: "year" },
-    { header: "Faculty", accessor: "faculty_id", render: (value: string) => value ? "Assigned" : "Unassigned" },
+    { 
+      header: "Year", 
+      accessor: "year", 
+      render: (value: number) => value ? `Year ${value}` : "-" 
+    },
+    { 
+      header: "Academic Year", 
+      accessor: "academic_year", 
+      render: (value: string) => value || "-" 
+    },
+    { 
+      header: "Semester", 
+      accessor: "semester", 
+      render: (value: number) => {
+        if (!value) return "-";
+        return value === 1 ? "I" : value === 2 ? "II" : value.toString();
+      }
+    },
+    { 
+      header: "Faculty", 
+      accessor: "faculty_name", 
+      render: (value: string, row: Course) => value || (row.faculty_id ? "Assigned" : "Unassigned")
+    },
   ];
 
   return (
