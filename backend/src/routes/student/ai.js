@@ -4,8 +4,6 @@ import express from "express";
 import axios from "axios";
 import multer from "multer";
 import FormData from "form-data";
-import fs from "fs";
-import path from "path";
 import { requireAuth } from "../../middleware/auth.js";
 import { requireStudent } from "../../middleware/studentCheck.js";
 import { query } from "../../config/db.js";
@@ -13,7 +11,7 @@ import { query } from "../../config/db.js";
 const router = express.Router();
 const ML_SERVICE_URL = process.env.ML_SERVICE_URL || "http://localhost:8000";
 
-// Configure multer for file uploads (in-memory storage for ML service, but we'll also save to disk)
+// Configure multer for file uploads (in-memory storage)
 const upload = multer({ storage: multer.memoryStorage() });
 
 // POST /student/ai/resume/analyze - Analyze resume PDF
@@ -41,7 +39,7 @@ router.post("/resume/analyze", requireAuth, requireStudent, upload.single("resum
 
     const parsedData = mlResponse.data;
 
-    // Store only parsed data (not the file)
+    // Store in database
     const studentId = req.studentProfile.id;
     await query(
       `UPDATE campus360_dev.profiles 
@@ -198,62 +196,6 @@ router.get("/placement/recommended", requireAuth, requireStudent, async (req, re
     }
     res.status(500).json({
       message: "Failed to get recommendations",
-      error: error.message,
-    });
-  }
-});
-
-// POST /student/ai/resume/save - Save resume PDF file
-router.post("/resume/save", requireAuth, requireStudent, upload.single("resume"), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
-    }
-
-    const studentId = req.studentProfile.id;
-    
-    // Save PDF file to disk
-    const uniqueFilename = `resume_${studentId}_${Date.now()}.pdf`;
-    const resumesDir = path.join("uploads", "resumes");
-    
-    // Create resumes directory if it doesn't exist
-    if (!fs.existsSync(resumesDir)) {
-      fs.mkdirSync(resumesDir, { recursive: true });
-    }
-    
-    const filePath = path.join(resumesDir, uniqueFilename);
-    fs.writeFileSync(filePath, req.file.buffer);
-
-    // Delete old resume if exists
-    const oldResume = await query(
-      `SELECT resume_url FROM campus360_dev.profiles WHERE id = $1`,
-      [studentId]
-    );
-    
-    if (oldResume.rows[0]?.resume_url && fs.existsSync(oldResume.rows[0].resume_url)) {
-      try {
-        fs.unlinkSync(oldResume.rows[0].resume_url);
-      } catch (err) {
-        console.warn("Failed to delete old resume:", err);
-      }
-    }
-
-    // Store file path in database
-    await query(
-      `UPDATE campus360_dev.profiles 
-       SET resume_url = $1 
-       WHERE id = $2`,
-      [filePath, studentId]
-    );
-
-    res.json({
-      message: "Resume saved successfully",
-      resume_url: filePath,
-    });
-  } catch (error) {
-    console.error("Resume save error:", error);
-    res.status(500).json({
-      message: "Failed to save resume",
       error: error.message,
     });
   }

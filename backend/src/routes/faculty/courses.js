@@ -43,11 +43,11 @@ router.get("/:id/students", requireAuth, requireFaculty, async (req, res) => {
 
     const r = await query(
       `SELECT p.id, p.full_name, p.email, p.phone, p.department, 
-              p.academic_year, p.student_year, p.roll_number
+              p.academic_year, p.student_year, p.section, p.roll_number
        FROM campus360_dev.enrollments e
        JOIN campus360_dev.profiles p ON p.id = e.student_id
        WHERE e.course_id = $1
-       ORDER BY p.academic_year DESC NULLS LAST, p.student_year, p.roll_number, p.full_name`,
+       ORDER BY p.academic_year DESC NULLS LAST, p.student_year, p.section, p.roll_number, p.full_name`,
       [courseId]
     );
 

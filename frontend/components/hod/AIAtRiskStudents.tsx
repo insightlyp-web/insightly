@@ -13,6 +13,7 @@ interface AtRiskStudent {
   student_email: string;
   student_year: string;
   academic_year: string;
+  section: string;
   risk_level: string;
   risk_score: number;
   risk_factors: string[];
@@ -145,7 +146,7 @@ export function AIAtRiskStudents() {
                   Student
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Year
+                  Year/Section
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Risk Level
@@ -170,7 +171,7 @@ export function AIAtRiskStudents() {
                     </div>
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                    {student.student_year}
+                    {student.student_year} / {student.section}
                   </td>
                   <td className="px-4 py-3 whitespace-nowrap">
                     <span

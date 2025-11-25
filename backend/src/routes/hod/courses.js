@@ -23,17 +23,7 @@ router.post("/", requireAuth, requireHOD, async (req, res) => {
 
 router.get("/", requireAuth, requireHOD, async (req, res) => {
   try {
-    const r = await query(
-      `SELECT 
-        c.id, c.code, c.name, c.department, c.year, c.academic_year, c.semester, 
-        c.subject_type, c.elective_group, c.faculty_id, c.created_at,
-        p.full_name AS faculty_name
-       FROM campus360_dev.courses c
-       LEFT JOIN campus360_dev.profiles p ON c.faculty_id = p.id
-       WHERE c.department=$1 
-       ORDER BY c.year DESC, c.semester DESC, c.code`, 
-      [req.department]
-    );
+    const r = await query(`SELECT * FROM campus360_dev.courses WHERE department=$1 ORDER BY code`, [req.department]);
     res.json({ courses: r.rows });
   } catch (err) {
     console.error("list courses error", err);
