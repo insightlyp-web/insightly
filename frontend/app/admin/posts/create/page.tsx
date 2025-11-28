@@ -15,6 +15,10 @@ interface Post {
   deadline: string;
   description: string;
   active?: boolean;
+  eligible_departments?: string[];
+  min_gpa?: number;
+  min_year?: number;
+  max_year?: number;
 }
 
 export default function CreatePostPage() {
@@ -37,6 +41,10 @@ export default function CreatePostPage() {
         deadline: data.deadline,
         description: data.description,
         active: data.active,
+        eligible_departments: data.eligible_departments,
+        min_gpa: data.min_gpa,
+        min_year: data.min_year,
+        max_year: data.max_year,
       };
       
       await apiClient.post("/admin/placement/posts", payload);

@@ -40,6 +40,21 @@ export default function NotificationsPage() {
     }
   };
 
+  const handleDelete = async (notificationId: string) => {
+    if (!confirm("Are you sure you want to delete this notification?")) {
+      return;
+    }
+
+    try {
+      await apiClient.delete(`/student/notifications/${notificationId}`);
+      // Remove from local state
+      setNotifications(notifications.filter(n => n.id !== notificationId));
+    } catch (error: any) {
+      console.error("Failed to delete notification:", error);
+      alert(error.response?.data?.message || "Failed to delete notification");
+    }
+  };
+
   if (loading) {
     return (
       <div className="text-center py-8">
@@ -75,11 +90,33 @@ export default function NotificationsPage() {
                     {new Date(notification.created_at).toLocaleString()}
                   </p>
                 </div>
-                {notification.type && (
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md ml-4">
-                    {notification.type}
-                  </span>
-                )}
+                <div className="flex items-center gap-2 ml-4">
+                  {notification.type && (
+                    <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">
+                      {notification.type.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
+                    </span>
+                  )}
+                  <button
+                    onClick={() => handleDelete(notification.id)}
+                    className="text-red-600 hover:text-red-800 p-1 rounded hover:bg-red-50 transition-colors"
+                    title="Delete notification"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </Card>
           ))}

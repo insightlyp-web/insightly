@@ -1,0 +1,1262 @@
+{
+  "department": "Civil Engineering",
+  "year": 2,
+  "academic_year": "2022-2024",
+  "students": [
+    {
+      "hall_ticket": "237Z1A04B1",
+      "name": "MAMIDI PAVAN",
+      "mobile": "9347784107",
+      "attendance": {
+        "AC": 13,
+        "NAS": 11,
+        "DLD": 12,
+        "SS": 14,
+        "PTSP": 13,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 1,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0401",
+      "name": "ADELLI ASHWINI",
+      "mobile": "7569202588",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 12,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 12,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0402",
+      "name": "ADUGANI SRIRAM",
+      "mobile": "9959600191",
+      "attendance": {
+        "AC": 8,
+        "NAS": 8,
+        "DLD": 11,
+        "SS": 11,
+        "PTSP": 10,
+        "AC-Lab": 3,
+        "DLD-Lab": 6,
+        "BS-Lab": 12,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0403",
+      "name": "AENUGU HARSHINI",
+      "mobile": "9703350999",
+      "attendance": {
+        "AC": 12,
+        "NAS": 11,
+        "DLD": 12,
+        "SS": 14,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0404",
+      "name": "AILA AASHRIETA",
+      "mobile": "8297279496",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 13,
+        "SS": 16,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0405",
+      "name": "AKKALA ANJITH VARMA",
+      "mobile": "9963734500",
+      "attendance": {
+        "AC": 10,
+        "NAS": 7,
+        "DLD": 11,
+        "SS": 10,
+        "PTSP": 11,
+        "AC-Lab": 3,
+        "DLD-Lab": 3,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 1,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0406",
+      "name": "ANIGATHALA VIGNESH",
+      "mobile": "7036113341",
+      "attendance": {
+        "AC": 13,
+        "NAS": 12,
+        "DLD": 13,
+        "SS": 15,
+        "PTSP": 13,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0407",
+      "name": "ANKATHI AKSHITHA",
+      "mobile": "9963557205",
+      "attendance": {
+        "AC": 14,
+        "NAS": 14,
+        "DLD": 17,
+        "SS": 18,
+        "PTSP": 14,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 12,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0408",
+      "name": "ANUGUTHALA NAVEEN",
+      "mobile": "9398804807",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 15,
+        "PTSP": 12,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0409",
+      "name": "BABRE BHAGYASREE",
+      "mobile": "9100589116",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 13,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0410",
+      "name": "BADDIPADIGA POOJITHA",
+      "mobile": "9133757548",
+      "attendance": {
+        "AC": 14,
+        "NAS": 14,
+        "DLD": 14,
+        "SS": 17,
+        "PTSP": 14,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0411",
+      "name": "BAKKI HARSHANJAI",
+      "mobile": "9177762324",
+      "attendance": {
+        "AC": 12,
+        "NAS": 14,
+        "DLD": 13,
+        "SS": 16,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 12,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0412",
+      "name": "BALAM SAI TEJA",
+      "mobile": "9182357171",
+      "attendance": {
+        "AC": 14,
+        "NAS": 13,
+        "DLD": 13,
+        "SS": 16,
+        "PTSP": 14,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0413",
+      "name": "BANDI ASHWITHA",
+      "mobile": "9912903033",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 13,
+        "SS": 15,
+        "PTSP": 12,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0414",
+      "name": "BANDIRALA JAVANA",
+      "mobile": "9866854052",
+      "attendance": {
+        "AC": 13,
+        "NAS": 12,
+        "DLD": 12,
+        "SS": 15,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0415",
+      "name": "BANOTH NITHIN",
+      "mobile": "8247842413",
+      "attendance": {
+        "AC": 10,
+        "NAS": 8,
+        "DLD": 12,
+        "SS": 11,
+        "PTSP": 11,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0417",
+      "name": "BATHULA SAI SINDHUJA",
+      "mobile": "9989001604",
+      "attendance": {
+        "AC": 11,
+        "NAS": 11,
+        "DLD": 14,
+        "SS": 14,
+        "PTSP": 12,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0418",
+      "name": "BEJJARAPU MEGHASHYAM",
+      "mobile": "9652957437",
+      "attendance": {
+        "AC": 11,
+        "NAS": 9,
+        "DLD": 13,
+        "SS": 13,
+        "PTSP": 13,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0419",
+      "name": "BHUKYA ASMITHA",
+      "mobile": "6281848692",
+      "attendance": {
+        "AC": 14,
+        "NAS": 14,
+        "DLD": 16,
+        "SS": 18,
+        "PTSP": 15,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 12,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0421",
+      "name": "BHUKYA SUHAS",
+      "mobile": "8341898448",
+      "attendance": {
+        "AC": 12,
+        "NAS": 13,
+        "DLD": 13,
+        "SS": 15,
+        "PTSP": 14,
+        "AC-Lab": 6,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0422",
+      "name": "BODA SHASHIKUMAR",
+      "mobile": "8247842413",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 13,
+        "SS": 15,
+        "PTSP": 14,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0423",
+      "name": "BODASU VAYUNANDAN RAJ",
+      "mobile": "9182078819",
+      "attendance": {
+        "AC": 13,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 13,
+        "AC-Lab": 12,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0424",
+      "name": "BOGARI SUDHEEKSHA",
+      "mobile": "9908141108",
+      "attendance": {
+        "AC": 13,
+        "NAS": 15,
+        "DLD": 15,
+        "SS": 18,
+        "PTSP": 12,
+        "AC-Lab": 12,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0425",
+      "name": "BOKKA KRITHIKA REDDY",
+      "mobile": "9392753322",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 14,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0426",
+      "name": "BOLLEPALLY SATYANARAYANA RAJU",
+      "mobile": "9948896531",
+      "attendance": {
+        "AC": 15,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 18,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0427",
+      "name": "BOLLIPOGU PAVAN KUMAR",
+      "mobile": "9542216595",
+      "attendance": {
+        "AC": 13,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 13,
+        "AC-Lab": 12,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0428",
+      "name": "BOLUGANI TEJA",
+      "mobile": "8309142229",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 13,
+        "AC-Lab": 12,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0429",
+      "name": "BOMMAGONI ADITYA",
+      "mobile": "9505510212",
+      "attendance": {
+        "AC": 8,
+        "NAS": 6,
+        "DLD": 10,
+        "SS": 9,
+        "PTSP": 10,
+        "AC-Lab": 3,
+        "DLD-Lab": 0,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 1,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0430",
+      "name": "BOMPALLY RAMMOHANRAO",
+      "mobile": "8897315154",
+      "attendance": {
+        "AC": 11,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 15,
+        "PTSP": 11,
+        "AC-Lab": 12,
+        "DLD-Lab": 3,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0432",
+      "name": "CHEERA KRISHNA VAMSHI",
+      "mobile": "9848892095",
+      "attendance": {
+        "AC": 9,
+        "NAS": 8,
+        "DLD": 9,
+        "SS": 10,
+        "PTSP": 12,
+        "AC-Lab": 3,
+        "DLD-Lab": 6,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 1,
+        "SPORTS": 4,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0433",
+      "name": "CHEKURI MANISH REDDY",
+      "mobile": "9908649000",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 13,
+        "SS": 14,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0434",
+      "name": "CHELIMILLA SRIVIDHYA",
+      "mobile": "9493111541",
+      "attendance": {
+        "AC": 12,
+        "NAS": 14,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 13,
+        "AC-Lab": 12,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0435",
+      "name": "CHENNABOINA AKHILA",
+      "mobile": "9392682811",
+      "attendance": {
+        "AC": 14,
+        "NAS": 13,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 14,
+        "AC-Lab": 12,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0436",
+      "name": "CHILIVERU SUKUMAR",
+      "mobile": "9912960338",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 17,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0437",
+      "name": "CHINTHALA SRI VARSHA",
+      "mobile": "9666917715",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 14,
+        "AC-Lab": 12,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0439",
+      "name": "CHITTOJU SAI ABHISHEK",
+      "mobile": "9618563293",
+      "attendance": {
+        "AC": 10,
+        "NAS": 9,
+        "DLD": 12,
+        "SS": 12,
+        "PTSP": 12,
+        "AC-Lab": 6,
+        "DLD-Lab": 3,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0440",
+      "name": "CHOWDERPALLY SRIMALLIKARJUN",
+      "mobile": "9573135983",
+      "attendance": {
+        "AC": 8,
+        "NAS": 7,
+        "DLD": 11,
+        "SS": 11,
+        "PTSP": 11,
+        "AC-Lab": 6,
+        "DLD-Lab": 3,
+        "BS-Lab": 0,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0441",
+      "name": "DANDAM MANISHA REDDY",
+      "mobile": "9948119951",
+      "attendance": {
+        "AC": 11,
+        "NAS": 8,
+        "DLD": 9,
+        "SS": 11,
+        "PTSP": 8,
+        "AC-Lab": 6,
+        "DLD-Lab": 6,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 4,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0442",
+      "name": "DANDU DHILIP",
+      "mobile": "9701408821",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0443",
+      "name": "DARBASTEWAR SARTHAK SHYAMSUNDER",
+      "mobile": "7057372788",
+      "attendance": {
+        "AC": 8,
+        "NAS": 10,
+        "DLD": 12,
+        "SS": 11,
+        "PTSP": 7,
+        "AC-Lab": 9,
+        "DLD-Lab": 0,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 1
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0444",
+      "name": "DARIPELLI JOSHNAVI",
+      "mobile": "9704231164",
+      "attendance": {
+        "AC": 15,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0445",
+      "name": "DASARI ROHITH",
+      "mobile": "7674888107",
+      "attendance": {
+        "AC": 7,
+        "NAS": 7,
+        "DLD": 11,
+        "SS": 9,
+        "PTSP": 9,
+        "AC-Lab": 6,
+        "DLD-Lab": 0,
+        "BS-Lab": 0,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0446",
+      "name": "DAYYALA NIKITHA",
+      "mobile": "9701060764",
+      "attendance": {
+        "AC": 9,
+        "NAS": 10,
+        "DLD": 12,
+        "SS": 12,
+        "PTSP": 9,
+        "AC-Lab": 9,
+        "DLD-Lab": 3,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 4,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0447",
+      "name": "DEVI REDDY SAI SURAJ REDDY",
+      "mobile": "7729862553",
+      "attendance": {
+        "AC": 12,
+        "NAS": 11,
+        "DLD": 14,
+        "SS": 14,
+        "PTSP": 11,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0448",
+      "name": "DHARAVATH BIKSHAPATHI",
+      "mobile": "8186063704",
+      "attendance": {
+        "AC": 10,
+        "NAS": 13,
+        "DLD": 11,
+        "SS": 14,
+        "PTSP": 9,
+        "AC-Lab": 6,
+        "DLD-Lab": 12,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 1
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0449",
+      "name": "DHARAVATH THARUN",
+      "mobile": "9625012899",
+      "attendance": {
+        "AC": 10,
+        "NAS": 11,
+        "DLD": 13,
+        "SS": 13,
+        "PTSP": 10,
+        "AC-Lab": 6,
+        "DLD-Lab": 9,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0450",
+      "name": "DHEERAVATH NAVEEN",
+      "mobile": "9948258916",
+      "attendance": {
+        "AC": 12,
+        "NAS": 13,
+        "DLD": 13,
+        "SS": 16,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0451",
+      "name": "DODA RANA PRATHAP REDDY",
+      "mobile": "9603790348",
+      "attendance": {
+        "AC": 9,
+        "NAS": 11,
+        "DLD": 11,
+        "SS": 12,
+        "PTSP": 13,
+        "AC-Lab": 6,
+        "DLD-Lab": 6,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0452",
+      "name": "DURGANOLLADURGA",
+      "mobile": "9908872664",
+      "attendance": {
+        "AC": 7,
+        "NAS": 6,
+        "DLD": 9,
+        "SS": 9,
+        "PTSP": 7,
+        "AC-Lab": 3,
+        "DLD-Lab": 6,
+        "BS-Lab": 0,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 4,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0453",
+      "name": "EDULLA AKSHITH REDDY",
+      "mobile": "7661056234",
+      "attendance": {
+        "AC": 13,
+        "NAS": 15,
+        "DLD": 14,
+        "SS": 17,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0454",
+      "name": "EGGADI ROHITHVARMA",
+      "mobile": "8008363596",
+      "attendance": {
+        "AC": 13,
+        "NAS": 14,
+        "DLD": 14,
+        "SS": 17,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0455",
+      "name": "EPPA NIRIKSHANA",
+      "mobile": "8008813664",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 12,
+        "AC-Lab": 12,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0456",
+      "name": "ESAKANTI RAKESH",
+      "mobile": "9989823201",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 13,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0458",
+      "name": "G SHIVAPRASAD REDDY",
+      "mobile": "9390468482",
+      "attendance": {
+        "AC": 12,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 16,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0459",
+      "name": "GAIGULA DIVYA",
+      "mobile": "9959147794",
+      "attendance": {
+        "AC": 14,
+        "NAS": 13,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 15,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0460",
+      "name": "GAJULA CHANDU",
+      "mobile": "6301898303",
+      "attendance": {
+        "AC": 13,
+        "NAS": 13,
+        "DLD": 14,
+        "SS": 16,
+        "PTSP": 14,
+        "AC-Lab": 3,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0461",
+      "name": "GAJULA DEEPAK CHANDU",
+      "mobile": "9347394317",
+      "attendance": {
+        "AC": 11,
+        "NAS": 11,
+        "DLD": 13,
+        "SS": 13,
+        "PTSP": 13,
+        "AC-Lab": 6,
+        "DLD-Lab": 6,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 2,
+        "SPORTS": 6,
+        "DAA": 2
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0462",
+      "name": "GANGADHARI JAGAN",
+      "mobile": "9603171904",
+      "attendance": {
+        "AC": 12,
+        "NAS": 11,
+        "DLD": 13,
+        "SS": 14,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 3,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0463",
+      "name": "GANGISHETTI ROSHINI",
+      "mobile": "9248161943",
+      "attendance": {
+        "AC": 11,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 15,
+        "PTSP": 12,
+        "AC-Lab": 6,
+        "DLD-Lab": 12,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0464",
+      "name": "GARREPELLI RITHWIK",
+      "mobile": "9666036214",
+      "attendance": {
+        "AC": 12,
+        "NAS": 12,
+        "DLD": 13,
+        "SS": 15,
+        "PTSP": 12,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0465",
+      "name": "GAVVALA SHIVADEEPTHI",
+      "mobile": "7815907354",
+      "attendance": {
+        "AC": 15,
+        "NAS": 15,
+        "DLD": 16,
+        "SS": 19,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0466",
+      "name": "GEDDAVALASA SAIKUMAR",
+      "mobile": "9398178978",
+      "attendance": {
+        "AC": 15,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 18,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0467",
+      "name": "GOVINDULA ARCHANA",
+      "mobile": "8125438326",
+      "attendance": {
+        "AC": 15,
+        "NAS": 15,
+        "DLD": 16,
+        "SS": 19,
+        "PTSP": 16,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 9,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0468",
+      "name": "GUGULOTHU DEVAKI",
+      "mobile": "7989407691",
+      "attendance": {
+        "AC": 14,
+        "NAS": 14,
+        "DLD": 15,
+        "SS": 18,
+        "PTSP": 15,
+        "AC-Lab": 9,
+        "DLD-Lab": 12,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 4,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0469",
+      "name": "GURRAM CHARAN",
+      "mobile": "6304066195",
+      "attendance": {
+        "AC": 13,
+        "NAS": 12,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 15,
+        "AC-Lab": 6,
+        "DLD-Lab": 12,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 4,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    },
+    {
+      "hall_ticket": "247Z1A0470",
+      "name": "JAMMU NITHIN",
+      "mobile": "9959745873",
+      "attendance": {
+        "AC": 14,
+        "NAS": 13,
+        "DLD": 15,
+        "SS": 17,
+        "PTSP": 15,
+        "AC-Lab": 9,
+        "DLD-Lab": 9,
+        "BS-Lab": 6,
+        "Col": 8,
+        "LIB/SCM": 3,
+        "SPORTS": 6,
+        "DAA": 4
+      }
+    }
+  ],
+  "notes": "Converted from Excel file. Subject totals: {\"AC\":16,\"NAS\":16,\"DLD\":17,\"SS\":20,\"PTSP\":16,\"AC-Lab\":12,\"DLD-Lab\":12,\"BS-Lab\":12,\"Col\":8,\"LIB/SCM\":4,\"SPORTS\":6,\"DAA\":4}"
+}

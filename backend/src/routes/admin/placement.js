@@ -44,10 +44,23 @@ router.get("/posts", requireAuth, requireAdmin, async (req, res) => {
 });
 
 // POST /admin/placement/posts
-// Body: { title, company_name, job_type, package, required_skills, deadline, description }
+// Body: { title, company_name, job_type, package, required_skills, deadline, description, eligible_departments, min_gpa, min_year, max_year, active }
 router.post("/posts", requireAuth, requireAdmin, async (req, res) => {
   const adminId = req.adminProfile.id;
-  const { title, company_name, job_type, package: pkg, required_skills, deadline, description } = req.body;
+  const { 
+    title, 
+    company_name, 
+    job_type, 
+    package: pkg, 
+    required_skills, 
+    deadline, 
+    description,
+    eligible_departments,
+    min_gpa,
+    min_year,
+    max_year,
+    active
+  } = req.body;
 
   if (!title || !company_name || !job_type) {
     return res.status(400).json({ message: "title, company_name, job_type required" });
@@ -56,8 +69,9 @@ router.post("/posts", requireAuth, requireAdmin, async (req, res) => {
   try {
     const r = await query(
       `INSERT INTO campus360_dev.placement_posts
-       (created_by, title, company_name, job_type, package, required_skills, deadline, description)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+       (created_by, title, company_name, job_type, package, required_skills, deadline, description, 
+        eligible_departments, min_gpa, min_year, max_year, active)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
        RETURNING *`,
       [
         adminId,
@@ -67,7 +81,12 @@ router.post("/posts", requireAuth, requireAdmin, async (req, res) => {
         pkg || null,
         required_skills || null,
         deadline || null,
-        description || null
+        description || null,
+        eligible_departments || null,
+        min_gpa || null,
+        min_year || null,
+        max_year || null,
+        active !== undefined ? active : true
       ]
     );
 
@@ -111,7 +130,20 @@ router.get("/posts/:id", requireAuth, requireAdmin, async (req, res) => {
 // PUT /admin/placement/posts/:id
 router.put("/posts/:id", requireAuth, requireAdmin, async (req, res) => {
   const postId = req.params.id;
-  const { title, company_name, job_type, package: pkg, required_skills, deadline, description } = req.body;
+  const { 
+    title, 
+    company_name, 
+    job_type, 
+    package: pkg, 
+    required_skills, 
+    deadline, 
+    description,
+    eligible_departments,
+    min_gpa,
+    min_year,
+    max_year,
+    active
+  } = req.body;
 
   try {
     await query(
@@ -122,9 +154,15 @@ router.put("/posts/:id", requireAuth, requireAdmin, async (req, res) => {
            package = COALESCE($4, package),
            required_skills = COALESCE($5, required_skills),
            deadline = COALESCE($6, deadline),
-           description = COALESCE($7, description)
-       WHERE id = $8`,
-      [title, company_name, job_type, pkg, required_skills, deadline, description, postId]
+           description = COALESCE($7, description),
+           eligible_departments = COALESCE($8, eligible_departments),
+           min_gpa = COALESCE($9, min_gpa),
+           min_year = COALESCE($10, min_year),
+           max_year = COALESCE($11, max_year),
+           active = COALESCE($12, active)
+       WHERE id = $13`,
+      [title, company_name, job_type, pkg, required_skills, deadline, description, 
+       eligible_departments, min_gpa, min_year, max_year, active, postId]
     );
     res.json({ message: "Placement post updated" });
   } catch (err) {

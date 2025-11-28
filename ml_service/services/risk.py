@@ -7,9 +7,11 @@ from typing import List, Dict, Any
 
 class RiskPredictor:
     def __init__(self):
-        # Risk thresholds (adjusted to be less sensitive)
-        self.ATTENDANCE_THRESHOLD_LOW = 50  # Changed from 60
-        self.ATTENDANCE_THRESHOLD_MEDIUM = 70  # Changed from 75
+        # Risk thresholds
+        self.ATTENDANCE_THRESHOLD_HIGH_RISK = 65  # Below 65% = high risk
+        self.ATTENDANCE_THRESHOLD_MEDIUM_RISK = 60  # 60-65% = medium risk
+        self.ATTENDANCE_THRESHOLD_LOW = 50  # Very low attendance
+        self.ATTENDANCE_THRESHOLD_MEDIUM = 70  # Low attendance
         self.MARKS_THRESHOLD_LOW = 40  # Changed from 50
         self.MARKS_THRESHOLD_MEDIUM = 55  # Changed from 65
         self.SKILLS_THRESHOLD_LOW = 2  # Changed from 3 (less strict for students without resumes)
@@ -34,14 +36,20 @@ class RiskPredictor:
         risk_score = 0
         
         # Factor 1: Attendance
-        # Only penalize if attendance is significantly low
+        # Below 65% = high risk, 60-65% = medium risk
         # If attendance is 100%, it means no data was available, so don't penalize
-        if attendance < self.ATTENDANCE_THRESHOLD_LOW and attendance < 100:
-            risk_factors.append("Very low attendance")
-            risk_score += 2.5  # Balanced value
+        if attendance < self.ATTENDANCE_THRESHOLD_HIGH_RISK and attendance < 100:
+            if attendance < self.ATTENDANCE_THRESHOLD_MEDIUM_RISK:
+                # Below 60% = high risk
+                risk_factors.append("Very low attendance (below 60%)")
+                risk_score += 5.0  # High risk - enough to trigger high risk level
+            else:
+                # 60-65% = medium risk
+                risk_factors.append("Low attendance (60-65%)")
+                risk_score += 3.0  # Medium risk - enough to trigger medium risk level
         elif attendance < self.ATTENDANCE_THRESHOLD_MEDIUM and attendance < 100:
             risk_factors.append("Low attendance")
-            risk_score += 1.5  # Balanced value
+            risk_score += 1.5  # Low-medium risk
         
         # Factor 2: Internal Marks
         if internal_marks:
@@ -116,7 +124,15 @@ class RiskPredictor:
         """Generate personalized recommendations based on risk factors"""
         recommendations = []
         
-        if attendance < 75:
+        if attendance < self.ATTENDANCE_THRESHOLD_MEDIUM_RISK:
+            recommendations.append("URGENT: Attendance is critically low (below 60%). Immediate action required")
+            recommendations.append("Contact faculty or HOD immediately to discuss attendance issues")
+            recommendations.append("Attend all remaining classes to improve attendance percentage")
+        elif attendance < self.ATTENDANCE_THRESHOLD_HIGH_RISK:
+            recommendations.append("WARNING: Attendance is low (60-65%). Action needed")
+            recommendations.append("Contact faculty or HOD to discuss attendance improvement")
+            recommendations.append("Attend all remaining classes to improve attendance percentage")
+        elif attendance < 75:
             recommendations.append("Improve attendance by attending all classes regularly")
             recommendations.append("Contact faculty or HOD if facing attendance issues")
         

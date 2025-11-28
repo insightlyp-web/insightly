@@ -83,4 +83,40 @@ router.get("/", requireAuth, requireHOD, async (req, res) => {
   }
 });
 
+router.delete("/:id", requireAuth, requireHOD, async (req, res) => {
+  const facultyId = req.params.id;
+  try {
+    // Verify faculty belongs to the HOD's department
+    const facultyCheck = await query(
+      `SELECT id FROM campus360_dev.profiles WHERE id = $1 AND department = $2 AND role = 'faculty'`,
+      [facultyId, req.department]
+    );
+
+    if (facultyCheck.rows.length === 0) {
+      return res.status(404).json({ message: "Faculty not found or does not belong to your department" });
+    }
+
+    // Check if faculty has courses assigned
+    const coursesCheck = await query(
+      `SELECT COUNT(*) as count FROM campus360_dev.courses WHERE faculty_id = $1`,
+      [facultyId]
+    );
+    const coursesCount = parseInt(coursesCheck.rows[0]?.count || 0);
+
+    // Delete faculty (courses will have faculty_id set to NULL due to ON DELETE SET NULL)
+    await query(
+      `DELETE FROM campus360_dev.profiles WHERE id = $1`,
+      [facultyId]
+    );
+
+    res.json({ 
+      message: "Faculty deleted successfully",
+      courses_unassigned: coursesCount
+    });
+  } catch (err) {
+    console.error("delete faculty error", err);
+    res.status(500).json({ message: "Server error deleting faculty" });
+  }
+});
+
 export default router;

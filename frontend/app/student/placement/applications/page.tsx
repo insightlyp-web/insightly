@@ -14,6 +14,7 @@ interface Application {
   applied_at: string;
   mentor_feedback?: string;
   admin_feedback?: string;
+  status_history?: any[];
 }
 
 const getStatusColor = (status: string) => {
@@ -94,6 +95,18 @@ export default function ApplicationsPage() {
           "-"
         );
       },
+    },
+    {
+      header: "Actions",
+      accessor: "id",
+      render: (value: string) => (
+        <a
+          href={`/student/placement/applications/${value}`}
+          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+        >
+          View Details
+        </a>
+      ),
     },
   ];
 

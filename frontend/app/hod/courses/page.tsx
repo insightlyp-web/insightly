@@ -75,6 +75,29 @@ export default function CoursesPage() {
     }
   };
 
+  const handleDelete = async (courseId: string, courseCode: string, courseName: string) => {
+    if (!confirm(`Are you sure you want to delete ${courseCode} - ${courseName}? This will delete all enrollments and assessments for this course.`)) {
+      return;
+    }
+
+    try {
+      setMessage(null);
+      const response = await apiClient.delete(`/hod/courses/${courseId}`);
+      
+      setMessage({
+        type: "success",
+        text: response.data.message || "Course deleted successfully",
+      });
+
+      await fetchCourses();
+    } catch (error: any) {
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to delete course",
+      });
+    }
+  };
+
   const columns = [
     { header: "Code", accessor: "code" },
     { header: "Name", accessor: "name" },
@@ -100,6 +123,18 @@ export default function CoursesPage() {
       header: "Faculty", 
       accessor: "faculty_name", 
       render: (value: string, row: Course) => value || (row.faculty_id ? "Assigned" : "Unassigned")
+    },
+    {
+      header: "Actions",
+      accessor: "id",
+      render: (value: string, row: Course) => (
+        <button
+          onClick={() => handleDelete(value, row.code, row.name)}
+          className="text-red-600 hover:text-red-800 text-sm font-medium"
+        >
+          Delete
+        </button>
+      ),
     },
   ];
 

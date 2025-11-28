@@ -28,11 +28,21 @@ export function AISkillGap() {
   const fetchSkillGap = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await apiClient.get("/hod/ai/skills/gap");
       setSkillGapData(response.data.skill_gap_distribution || []);
+      // Show message if ML service is unavailable
+      if (response.data.message && response.data.skill_gap_distribution?.length === 0) {
+        setError(response.data.message);
+      }
     } catch (err: any) {
       console.error("Failed to fetch skill gap data:", err);
-      setError(err.response?.data?.message || "Failed to load skill gap analysis");
+      // Don't show error for connection refused - ML service might be down
+      if (err.code === 'ERR_NETWORK' || err.message?.includes('ECONNREFUSED')) {
+        setError("ML service is currently unavailable. Please ensure the ML service is running on port 8000.");
+      } else {
+        setError(err.response?.data?.message || "Failed to load skill gap analysis");
+      }
     } finally {
       setLoading(false);
     }

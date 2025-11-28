@@ -30,24 +30,42 @@ export function ApplicationsTable({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [status, setStatus] = useState("");
   const [feedback, setFeedback] = useState("");
+  const [saving, setSaving] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleEdit = (app: Application) => {
     setEditingId(app.id);
     setStatus(app.status);
     setFeedback(app.admin_feedback || "");
+    setError(null);
   };
 
   const handleSave = async (id: string) => {
-    await onStatusUpdate(id, status, feedback);
-    setEditingId(null);
-    setStatus("");
-    setFeedback("");
+    if (!status) {
+      setError("Please select a status");
+      return;
+    }
+
+    try {
+      setSaving(id);
+      setError(null);
+      await onStatusUpdate(id, status, feedback);
+      setEditingId(null);
+      setStatus("");
+      setFeedback("");
+    } catch (err) {
+      // Error is already handled in parent component
+      setError("Failed to update status. Please try again.");
+    } finally {
+      setSaving(null);
+    }
   };
 
   const handleCancel = () => {
     setEditingId(null);
     setStatus("");
     setFeedback("");
+    setError(null);
   };
 
   if (loading) {
@@ -151,26 +169,33 @@ export function ApplicationsTable({
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   {editingId === app.id ? (
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleSave(app.id)}
-                        className="text-green-600 hover:text-green-900"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={handleCancel}
-                        className="text-gray-600 hover:text-gray-900"
-                      >
-                        Cancel
-                      </button>
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleSave(app.id)}
+                          disabled={saving === app.id}
+                          className="text-green-600 hover:text-green-900 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {saving === app.id ? "Saving..." : "Save"}
+                        </button>
+                        <button
+                          onClick={handleCancel}
+                          disabled={saving === app.id}
+                          className="text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      {error && editingId === app.id && (
+                        <p className="text-xs text-red-600">{error}</p>
+                      )}
                     </div>
                   ) : (
                     <button
                       onClick={() => handleEdit(app)}
-                      className="text-blue-600 hover:text-blue-900"
+                      className="text-blue-600 hover:text-blue-900 font-medium"
                     >
-                      Update
+                      Update Status
                     </button>
                   )}
                 </td>

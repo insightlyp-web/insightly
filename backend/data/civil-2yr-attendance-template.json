@@ -1,0 +1,28 @@
+{
+  "department": "Civil Engineering",
+  "year": 2,
+  "academic_year": "2022-2024",
+  "students": [
+    {
+      "hall_ticket": "247Z1A0401",
+      "name": "MAMIDI PAVAN",
+      "mobile": "1234567890",
+      "attendance": {
+        "AC": 16,
+        "NAS": 12,
+        "DLD": 14,
+        "SS": 17,
+        "PTSP": 16,
+        "AC-Lab": 12,
+        "DLD-Lab": 12,
+        "BS-Lab": 8,
+        "Col": 4,
+        "LIB/SCM": 1,
+        "SPORTS": 6,
+        "DAA": 3
+      }
+    }
+  ],
+  "notes": "Add all student records here. Each student should have hall_ticket, name, mobile, and attendance object with subject short names as keys."
+}
+

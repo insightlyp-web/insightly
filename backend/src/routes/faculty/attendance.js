@@ -264,5 +264,85 @@ router.get("/course/:courseId", requireAuth, requireFaculty, async (req, res) =>
   }
 });
 
+// GET /faculty/attendance/subjects
+// Get attendance summary for all courses assigned to this faculty
+router.get("/subjects", requireAuth, requireFaculty, async (req, res) => {
+  const facultyId = req.facultyProfile.id;
+
+  try {
+    // Get all courses with attendance summary
+    const coursesRes = await query(
+      `WITH course_attendance AS (
+        SELECT 
+          c.id AS course_id,
+          c.code AS course_code,
+          c.name AS course_name,
+          c.year,
+          c.academic_year,
+          c.semester,
+          COUNT(DISTINCT s.id) AS total_sessions,
+          COUNT(DISTINCT e.student_id) AS total_students,
+          COUNT(DISTINCT ar.id) AS total_attendance_records
+        FROM campus360_dev.courses c
+        LEFT JOIN campus360_dev.attendance_sessions s ON s.course_id = c.id
+        LEFT JOIN campus360_dev.enrollments e ON e.course_id = c.id
+        LEFT JOIN campus360_dev.attendance_records ar ON ar.session_id = s.id
+        WHERE c.faculty_id = $1
+        GROUP BY c.id, c.code, c.name, c.year, c.academic_year, c.semester
+      ),
+      student_attendance AS (
+        SELECT 
+          c.id AS course_id,
+          AVG(
+            CASE 
+              WHEN sc.total_sessions > 0 
+              THEN (sc.attended_sessions::numeric / sc.total_sessions::numeric) * 100
+              ELSE 0 
+            END
+          ) AS avg_attendance_percentage
+        FROM campus360_dev.courses c
+        JOIN campus360_dev.enrollments e ON e.course_id = c.id
+        LEFT JOIN (
+          SELECT 
+            e2.student_id,
+            e2.course_id,
+            COUNT(DISTINCT s.id) AS total_sessions,
+            COUNT(DISTINCT ar.id) AS attended_sessions
+          FROM campus360_dev.enrollments e2
+          CROSS JOIN campus360_dev.attendance_sessions s
+          LEFT JOIN campus360_dev.attendance_records ar 
+            ON ar.student_id = e2.student_id AND ar.session_id = s.id
+          WHERE s.course_id = e2.course_id
+          GROUP BY e2.student_id, e2.course_id
+        ) sc ON sc.student_id = e.student_id AND sc.course_id = c.id
+        WHERE c.faculty_id = $1
+        GROUP BY c.id
+      )
+      SELECT 
+        ca.course_id,
+        ca.course_code,
+        ca.course_name,
+        ca.year,
+        ca.academic_year,
+        ca.semester,
+        COALESCE(ca.total_sessions, 0) AS total_sessions,
+        COALESCE(ca.total_students, 0) AS total_students,
+        COALESCE(ca.total_attendance_records, 0) AS total_attendance_records,
+        COALESCE(sa.avg_attendance_percentage, 0) AS avg_attendance_percentage
+      FROM course_attendance ca
+      LEFT JOIN student_attendance sa ON sa.course_id = ca.course_id
+      ORDER BY ca.year DESC NULLS LAST, ca.semester DESC NULLS LAST, ca.course_code`,
+      [facultyId]
+    );
+
+    res.json({ 
+      subjects: coursesRes.rows 
+    });
+  } catch (err) {
+    console.error("Subject-wise attendance error:", err);
+    res.status(500).json({ message: "Failed to load subject-wise attendance" });
+  }
+});
+
 export default router;
 

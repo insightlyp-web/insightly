@@ -206,7 +206,6 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
         <Sidebar />
         <div className="flex-1 flex flex-col overflow-hidden">
           <div className="bg-white border-b border-gray-200 px-6 py-4">
-            <h1 className="text-xl font-semibold text-gray-900">Insightly Dashboard</h1>
           </div>
           <main className="flex-1 overflow-y-auto p-6">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
@@ -229,7 +228,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header userName={profile.full_name} />
+        <Header userName={profile.full_name} department={profile.department} />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
     </div>

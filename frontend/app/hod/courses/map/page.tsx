@@ -10,6 +10,8 @@ interface Course {
   id: string;
   code: string;
   name: string;
+  academic_year?: string;
+  semester?: number;
 }
 
 interface Faculty {
@@ -23,6 +25,8 @@ export default function MapCoursesPage() {
   const [faculty, setFaculty] = useState<Faculty[]>([]);
   const [selectedCourse, setSelectedCourse] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("");
+  const [academicYear, setAcademicYear] = useState("");
+  const [semester, setSemester] = useState<number | "">("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
@@ -53,10 +57,10 @@ export default function MapCoursesPage() {
 
   const handleAssign = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedCourse || !selectedFaculty) {
+    if (!selectedCourse) {
       setMessage({
         type: "error",
-        text: "Please select both course and faculty",
+        text: "Please select a course",
       });
       return;
     }
@@ -65,22 +69,45 @@ export default function MapCoursesPage() {
       setSubmitting(true);
       setMessage(null);
 
-      await apiClient.put(`/hod/courses/${selectedCourse}/map-faculty`, {
-        faculty_id: selectedFaculty,
-      });
+      const payload: any = {};
+      if (selectedFaculty && selectedFaculty !== "") {
+        payload.faculty_id = selectedFaculty;
+      } else if (selectedFaculty === "") {
+        // Allow unassigning faculty by sending null
+        payload.faculty_id = null;
+      }
+      if (academicYear && academicYear !== "") {
+        payload.academic_year = academicYear;
+      }
+      if (semester !== "") {
+        payload.semester = semester;
+      }
+
+      if (Object.keys(payload).length === 0) {
+        setMessage({
+          type: "error",
+          text: "Please select at least one field to update",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      await apiClient.put(`/hod/courses/${selectedCourse}/map-faculty`, payload);
 
       setMessage({
         type: "success",
-        text: "Course mapped to faculty successfully",
+        text: "Course updated successfully",
       });
 
       setSelectedCourse("");
       setSelectedFaculty("");
+      setAcademicYear("");
+      setSemester("");
       await fetchData();
     } catch (error: any) {
       setMessage({
         type: "error",
-        text: error.response?.data?.message || "Failed to map course",
+        text: error.response?.data?.message || "Failed to update course",
       });
     } finally {
       setSubmitting(false);
@@ -93,11 +120,24 @@ export default function MapCoursesPage() {
     { header: "Course Code", accessor: "code" },
     { header: "Course Name", accessor: "name" },
     { 
+      header: "Academic Year", 
+      accessor: "academic_year",
+      render: (value: string) => value || "-"
+    },
+    { 
+      header: "Semester", 
+      accessor: "semester",
+      render: (value: number) => {
+        if (!value) return "-";
+        return value === 1 ? "I" : value === 2 ? "II" : value === 3 ? "III" : value === 4 ? "IV" : value.toString();
+      }
+    },
+    { 
       header: "Assigned Faculty", 
       accessor: "faculty_id",
       render: (value: string) => {
         const facultyMember = faculty.find((f) => f.id === value);
-        return facultyMember ? facultyMember.full_name : "Unknown";
+        return facultyMember ? facultyMember.full_name : "Unassigned";
       }
     },
   ];
@@ -124,14 +164,22 @@ export default function MapCoursesPage() {
       )}
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Assign Faculty to Course</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Map Course to Faculty</h2>
         <form onSubmit={handleAssign} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Select Course</label>
             <select
               required
               value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value)}
+              onChange={(e) => {
+                setSelectedCourse(e.target.value);
+                // Pre-fill academic year and semester if course has them
+                const course = courses.find((c) => c.id === e.target.value);
+                if (course) {
+                  setAcademicYear(course.academic_year || "");
+                  setSemester(course.semester || "");
+                }
+              }}
               className="mt-1 block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
             >
               <option value="">Choose a course...</option>
@@ -145,12 +193,11 @@ export default function MapCoursesPage() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Select Faculty</label>
             <select
-              required
               value={selectedFaculty}
               onChange={(e) => setSelectedFaculty(e.target.value)}
               className="mt-1 block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
             >
-              <option value="">Choose a faculty member...</option>
+              <option value="">Choose a faculty member (optional)...</option>
               {faculty.map((f) => (
                 <option key={f.id} value={f.id}>
                   {f.full_name} ({f.email})
@@ -158,12 +205,41 @@ export default function MapCoursesPage() {
               ))}
             </select>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Academic Year</label>
+            <input
+              type="text"
+              value={academicYear}
+              onChange={(e) => setAcademicYear(e.target.value)}
+              placeholder="e.g., 2024-25"
+              className="mt-1 block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+            />
+            <p className="mt-1 text-xs text-gray-500">Format: YYYY-YY (e.g., 2024-25)</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Semester</label>
+            <select
+              value={semester}
+              onChange={(e) => setSemester(e.target.value === "" ? "" : parseInt(e.target.value))}
+              className="mt-1 block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+            >
+              <option value="">Select semester (optional)...</option>
+              <option value="1">Semester I</option>
+              <option value="2">Semester II</option>
+              <option value="3">Semester III</option>
+              <option value="4">Semester IV</option>
+              <option value="5">Semester V</option>
+              <option value="6">Semester VI</option>
+              <option value="7">Semester VII</option>
+              <option value="8">Semester VIII</option>
+            </select>
+          </div>
           <button
             type="submit"
             disabled={submitting}
             className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-50"
           >
-            {submitting ? "Assigning..." : "Assign Faculty"}
+            {submitting ? "Updating..." : "Update Course"}
           </button>
         </form>
       </Card>

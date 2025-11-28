@@ -9,7 +9,7 @@ const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: "/icons_admin/Dashboard.png" },
   { name: "Posts", href: "/admin/posts", icon: "/icons_admin/Posts.png" },
   { name: "Create Post", href: "/admin/posts/create", icon: "/icons_admin/Create Post.png" },
-  { name: "Applications", href: "/admin/posts", icon: "/icons_admin/Applications.png" },
+  { name: "Applications", href: "/admin/applications", icon: "/icons_admin/Applications.png" },
   {
     name: "Analytics",
     children: [
@@ -60,7 +60,19 @@ export function Sidebar() {
             );
           }
 
-          const isActive = pathname === item.href || (item.href !== "/admin/posts" && pathname?.startsWith(item.href));
+          // Special handling for Posts vs Applications
+          let isActive = false;
+          if (item.name === "Posts") {
+            // Posts is active only on exact /admin/posts (not on /admin/posts/create or /admin/posts/[id])
+            isActive = pathname === "/admin/posts";
+          } else if (item.name === "Applications") {
+            // Applications is active on /admin/applications or /admin/applications/[postId]
+            isActive = pathname === "/admin/applications" || pathname?.startsWith("/admin/applications/");
+          } else {
+            // For other items, check exact match or prefix match
+            isActive = pathname === item.href || (item.href !== "/admin/posts" && pathname?.startsWith(item.href));
+          }
+          
           return (
             <Link
               key={item.name}

@@ -1,0 +1,82 @@
+{
+  "department": "Civil Engineering",
+  "year": 2,
+  "academic_year": "2022-2024",
+  "total_classes_completed": {
+    "22EC301PC": {
+      "code": "22EC301PC",
+      "short_name": "AC",
+      "full_name": "Analog Circuits",
+      "total_classes": 16
+    },
+    "22EC302PC": {
+      "code": "22EC302PC",
+      "short_name": "NAS",
+      "full_name": "Network Analysis and Synthesis",
+      "total_classes": 16
+    },
+    "22EC303PC": {
+      "code": "22EC303PC",
+      "short_name": "DLD",
+      "full_name": "Digital Logic Design",
+      "total_classes": 17
+    },
+    "22EC304PC": {
+      "code": "22EC304PC",
+      "short_name": "SS",
+      "full_name": "Signals and Systems",
+      "total_classes": 20
+    },
+    "22EC305PC": {
+      "code": "22EC305PC",
+      "short_name": "PTSP",
+      "full_name": "Probability Theory and Stochastic Processes",
+      "total_classes": 16
+    },
+    "22EC306PC": {
+      "code": "22EC306PC",
+      "short_name": "AC-Lab",
+      "full_name": "Analog Circuits Laboratory",
+      "total_classes": 12
+    },
+    "22EC307PC": {
+      "code": "22EC307PC",
+      "short_name": "DLD-Lab",
+      "full_name": "Digital Logic Design Laboratory",
+      "total_classes": 12
+    },
+    "22EC308PC": {
+      "code": "22EC308PC",
+      "short_name": "BS-Lab",
+      "full_name": "Basic Skills Laboratory",
+      "total_classes": 12
+    },
+    "22MC309C": {
+      "code": "22MC309C",
+      "short_name": "Col",
+      "full_name": "Co-curricular",
+      "total_classes": 8
+    },
+    "ECE21LIB": {
+      "code": "ECE21LIB",
+      "short_name": "LIB/SCM",
+      "full_name": "Library/Self-Study/Co-curricular Module",
+      "total_classes": 4
+    },
+    "ECE21SPOF": {
+      "code": "ECE21SPOF",
+      "short_name": "SPORTS",
+      "full_name": "Sports and Physical Education",
+      "total_classes": 6
+    },
+    "ECE21DAA": {
+      "code": "ECE21DAA",
+      "short_name": "DAA",
+      "full_name": "Design and Analysis of Algorithms",
+      "total_classes": 4
+    }
+  },
+  "notes": "Total classes completed for 2nd year Civil Engineering students. Subject codes will be used to match with attendance data later.",
+  "created_at": "2025-01-28"
+}
+

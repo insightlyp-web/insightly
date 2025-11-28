@@ -27,24 +27,43 @@ router.get("/risk", requireAuth, requireHOD, async (req, res) => {
 
     // For each student, calculate risk
     for (const student of students) {
-      // Get overall attendance percentage
+      // Get overall attendance percentage across all courses
+      // Calculate weighted average across all subjects
       const attendanceResult = await query(
         `SELECT 
+          c.id as course_id,
+          c.code as course_code,
           COUNT(DISTINCT asess.id) as total_sessions,
           COUNT(DISTINCT ar.id) as attended_sessions
-         FROM campus360_dev.attendance_sessions asess
+         FROM campus360_dev.enrollments e
+         JOIN campus360_dev.courses c ON c.id = e.course_id
+         LEFT JOIN campus360_dev.attendance_sessions asess ON asess.course_id = c.id
          LEFT JOIN campus360_dev.attendance_records ar 
-           ON ar.session_id = asess.id AND ar.student_id = $1
-         WHERE asess.end_time > NOW() - INTERVAL '90 days'`,
+           ON ar.session_id = asess.id AND ar.student_id = e.student_id
+         WHERE e.student_id = $1
+         GROUP BY c.id, c.code
+         HAVING COUNT(DISTINCT asess.id) > 0`,
         [student.id]
       );
 
-      const totalSessions = parseInt(attendanceResult.rows[0]?.total_sessions || 0);
-      const attendedSessions = parseInt(attendanceResult.rows[0]?.attended_sessions || 0);
-      // If no sessions in last 90 days, don't penalize (assume data not available)
-      // Only calculate attendance if there are at least 5 sessions (enough data)
-      const attendance = totalSessions >= 5 
-        ? (attendedSessions / totalSessions) * 100 
+      // Calculate weighted average attendance across all courses
+      let totalWeightedAttendance = 0;
+      let totalWeight = 0;
+      
+      for (const course of attendanceResult.rows) {
+        const totalSessions = parseInt(course.total_sessions || 0);
+        const attendedSessions = parseInt(course.attended_sessions || 0);
+        
+        if (totalSessions > 0) {
+          const courseAttendance = (attendedSessions / totalSessions) * 100;
+          totalWeightedAttendance += courseAttendance * totalSessions; // Weight by number of sessions
+          totalWeight += totalSessions;
+        }
+      }
+
+      // Overall attendance percentage (weighted average)
+      const attendance = totalWeight > 0 
+        ? totalWeightedAttendance / totalWeight 
         : null; // null means insufficient data
 
       // Get all internal marks
@@ -114,7 +133,12 @@ router.get("/risk", requireAuth, requireHOD, async (req, res) => {
           });
         }
       } catch (error) {
-        console.error(`Error predicting risk for student ${student.id}:`, error);
+        // Log error but don't fail the entire request
+        if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+          console.warn(`ML service unavailable for student ${student.id}, skipping...`);
+        } else {
+          console.error(`Error predicting risk for student ${student.id}:`, error.message);
+        }
       }
     }
 
@@ -129,10 +153,20 @@ router.get("/risk", requireAuth, requireHOD, async (req, res) => {
     });
   } catch (error) {
     console.error("At-risk student prediction error:", error);
-    res.status(500).json({
-      message: "Failed to predict at-risk students",
-      error: error.message,
-    });
+    // Return empty results if ML service is unavailable, don't fail completely
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      res.json({
+        at_risk_students: [],
+        total_students: 0,
+        at_risk_count: 0,
+        message: "ML service is currently unavailable. Please try again later.",
+      });
+    } else {
+      res.status(500).json({
+        message: "Failed to predict at-risk students",
+        error: error.message,
+      });
+    }
   }
 });
 
@@ -185,7 +219,12 @@ router.get("/skills/gap", requireAuth, requireHOD, async (req, res) => {
             totalMatchPercentage += mlResponse.data.match_percentage;
             studentCount++;
           } catch (error) {
-            console.error(`Error analyzing skill gap for student ${student.id}:`, error);
+            // Log error but don't fail the entire request
+            if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+              console.warn(`ML service unavailable for student ${student.id}, skipping...`);
+            } else {
+              console.error(`Error analyzing skill gap for student ${student.id}:`, error.message);
+            }
           }
         }
       }
@@ -209,10 +248,20 @@ router.get("/skills/gap", requireAuth, requireHOD, async (req, res) => {
     });
   } catch (error) {
     console.error("Skill gap analysis error:", error);
-    res.status(500).json({
-      message: "Failed to analyze skill gaps",
-      error: error.message,
-    });
+    // Return empty results if ML service is unavailable, don't fail completely
+    if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT') {
+      res.json({
+        skill_gap_distribution: [],
+        total_posts: 0,
+        total_students: 0,
+        message: "ML service is currently unavailable. Please try again later.",
+      });
+    } else {
+      res.status(500).json({
+        message: "Failed to analyze skill gaps",
+        error: error.message,
+      });
+    }
   }
 });
 

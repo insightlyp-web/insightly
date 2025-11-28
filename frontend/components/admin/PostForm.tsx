@@ -14,6 +14,10 @@ interface Post {
   deadline: string;
   description: string;
   active?: boolean;
+  eligible_departments?: string[];
+  min_gpa?: number;
+  min_year?: number;
+  max_year?: number;
 }
 
 interface PostFormProps {
@@ -32,14 +36,20 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
     deadline: "",
     description: "",
     active: true,
+    eligible_departments: [],
+    min_gpa: undefined,
+    min_year: undefined,
+    max_year: undefined,
   });
 
   const [skillsInput, setSkillsInput] = useState("");
+  const [departmentsInput, setDepartmentsInput] = useState("");
 
   useEffect(() => {
     if (initialValues) {
       setFormData(initialValues);
       setSkillsInput(initialValues.required_skills?.join(", ") || "");
+      setDepartmentsInput(initialValues.eligible_departments?.join(", ") || "");
     }
   }, [initialValues]);
 
@@ -51,9 +61,15 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
 
+    const departments = departmentsInput
+      .split(",")
+      .map((d) => d.trim())
+      .filter((d) => d.length > 0);
+
     await onSubmit({
       ...formData,
       required_skills: skills,
+      eligible_departments: departments.length > 0 ? departments : undefined,
     });
   };
 
@@ -171,6 +187,86 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
             className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
             disabled={loading}
           />
+        </div>
+
+        <div className="border-t border-gray-200 pt-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Eligibility Criteria</h3>
+          
+          <div>
+            <label htmlFor="departments" className="block text-sm font-medium text-gray-700">
+              Eligible Departments (comma-separated, leave empty for all)
+            </label>
+            <input
+              type="text"
+              id="departments"
+              value={departmentsInput}
+              onChange={(e) => setDepartmentsInput(e.target.value)}
+              placeholder="e.g., CS, ECE, Civil"
+              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Leave empty to allow all departments
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div>
+              <label htmlFor="min_gpa" className="block text-sm font-medium text-gray-700">
+                Minimum GPA
+              </label>
+              <input
+                type="number"
+                id="min_gpa"
+                min="0"
+                max="10"
+                step="0.01"
+                value={formData.min_gpa || ""}
+                onChange={(e) => setFormData({ ...formData, min_gpa: e.target.value ? parseFloat(e.target.value) : undefined })}
+                placeholder="e.g., 7.5"
+                className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="min_year" className="block text-sm font-medium text-gray-700">
+                Minimum Year
+              </label>
+              <select
+                id="min_year"
+                value={formData.min_year || ""}
+                onChange={(e) => setFormData({ ...formData, min_year: e.target.value ? parseInt(e.target.value) : undefined })}
+                className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              >
+                <option value="">Any</option>
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="max_year" className="block text-sm font-medium text-gray-700">
+                Maximum Year
+              </label>
+              <select
+                id="max_year"
+                value={formData.max_year || ""}
+                onChange={(e) => setFormData({ ...formData, max_year: e.target.value ? parseInt(e.target.value) : undefined })}
+                className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              >
+                <option value="">Any</option>
+                <option value="1">Year 1</option>
+                <option value="2">Year 2</option>
+                <option value="3">Year 3</option>
+                <option value="4">Year 4</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div className="flex items-center">

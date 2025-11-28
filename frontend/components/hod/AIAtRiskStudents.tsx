@@ -33,11 +33,21 @@ export function AIAtRiskStudents() {
   const fetchAtRiskStudents = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await apiClient.get("/hod/ai/risk");
       setStudents(response.data.at_risk_students || []);
+      // Show message if ML service is unavailable
+      if (response.data.message && response.data.at_risk_count === 0) {
+        setError(response.data.message);
+      }
     } catch (err: any) {
       console.error("Failed to fetch at-risk students:", err);
-      setError(err.response?.data?.message || "Failed to load at-risk students");
+      // Don't show error for connection refused - ML service might be down
+      if (err.code === 'ERR_NETWORK' || err.message?.includes('ECONNREFUSED')) {
+        setError("ML service is currently unavailable. Please ensure the ML service is running on port 8000.");
+      } else {
+        setError(err.response?.data?.message || "Failed to load at-risk students");
+      }
     } finally {
       setLoading(false);
     }

@@ -43,13 +43,91 @@ router.get("/", requireAuth, requireHOD, async (req, res) => {
 
 router.put("/:id/map-faculty", requireAuth, requireHOD, async (req, res) => {
   const courseId = req.params.id;
-  const { faculty_id } = req.body;
+  const { faculty_id, academic_year, semester } = req.body;
   try {
-    await query(`UPDATE campus360_dev.courses SET faculty_id=$1 WHERE id=$2 AND department=$3`, [faculty_id, courseId, req.department]);
-    res.json({ message: "Faculty mapped successfully" });
+    // Build update query dynamically based on provided fields
+    const updates = [];
+    const values = [];
+    let paramIndex = 1;
+
+    if (faculty_id !== undefined) {
+      updates.push(`faculty_id = $${paramIndex++}`);
+      values.push(faculty_id === null || faculty_id === '' ? null : faculty_id);
+    }
+
+    if (academic_year !== undefined && academic_year !== null && academic_year !== '') {
+      updates.push(`academic_year = $${paramIndex++}`);
+      values.push(academic_year);
+    }
+
+    if (semester !== undefined && semester !== null && semester !== '') {
+      updates.push(`semester = $${paramIndex++}`);
+      values.push(semester);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ message: "At least one field (faculty_id, academic_year, or semester) must be provided" });
+    }
+
+    // Add courseId and department to values
+    values.push(courseId, req.department);
+
+    const queryText = `UPDATE campus360_dev.courses 
+                       SET ${updates.join(', ')} 
+                       WHERE id = $${paramIndex++} AND department = $${paramIndex++}`;
+
+    await query(queryText, values);
+    res.json({ message: "Course updated successfully" });
   } catch (err) {
     console.error("map faculty error", err);
-    res.status(500).json({ message: "Server error mapping faculty" });
+    res.status(500).json({ message: "Server error updating course" });
+  }
+});
+
+router.delete("/:id", requireAuth, requireHOD, async (req, res) => {
+  const courseId = req.params.id;
+  try {
+    // Verify course belongs to the HOD's department
+    const courseCheck = await query(
+      `SELECT id, code, name FROM campus360_dev.courses WHERE id = $1 AND department = $2`,
+      [courseId, req.department]
+    );
+
+    if (courseCheck.rows.length === 0) {
+      return res.status(404).json({ message: "Course not found or does not belong to your department" });
+    }
+
+    const course = courseCheck.rows[0];
+
+    // Get counts before deletion for response
+    const enrollmentsCheck = await query(
+      `SELECT COUNT(*) as count FROM campus360_dev.enrollments WHERE course_id = $1`,
+      [courseId]
+    );
+    const enrollmentsCount = parseInt(enrollmentsCheck.rows[0]?.count || 0);
+
+    const sessionsCheck = await query(
+      `SELECT COUNT(*) as count FROM campus360_dev.attendance_sessions WHERE course_id = $1`,
+      [courseId]
+    );
+    const sessionsCount = parseInt(sessionsCheck.rows[0]?.count || 0);
+
+    // Delete course (enrollments and assessments will be cascade deleted, attendance_sessions will have course_id set to NULL)
+    await query(
+      `DELETE FROM campus360_dev.courses WHERE id = $1`,
+      [courseId]
+    );
+
+    res.json({ 
+      message: "Course deleted successfully",
+      course_code: course.code,
+      course_name: course.name,
+      enrollments_deleted: enrollmentsCount,
+      sessions_affected: sessionsCount
+    });
+  } catch (err) {
+    console.error("delete course error", err);
+    res.status(500).json({ message: "Server error deleting course" });
   }
 });
 

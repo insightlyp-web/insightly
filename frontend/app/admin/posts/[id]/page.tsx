@@ -19,6 +19,10 @@ interface Post {
   description: string;
   active: boolean;
   application_count?: number;
+  eligible_departments?: string[];
+  min_gpa?: number;
+  min_year?: number;
+  max_year?: number;
 }
 
 export default function PostDetailPage() {
@@ -39,10 +43,16 @@ export default function PostDetailPage() {
       try {
         const response = await apiClient.get(`/admin/placement/posts/${postId}`);
         const postData = response.data.post;
+        const applicationsCount = response.data.applications_count || 0;
         // Transform backend data to match frontend form expectations
         setPost({
           ...postData,
           company: postData.company_name || postData.company, // Map 'company_name' to 'company'
+          application_count: applicationsCount, // Add application count from response
+          eligible_departments: postData.eligible_departments || [],
+          min_gpa: postData.min_gpa,
+          min_year: postData.min_year,
+          max_year: postData.max_year,
         });
       } catch (err: any) {
         setError(err.response?.data?.message || "Failed to fetch post");
@@ -69,6 +79,10 @@ export default function PostDetailPage() {
         deadline: data.deadline,
         description: data.description,
         active: data.active,
+        eligible_departments: data.eligible_departments,
+        min_gpa: data.min_gpa,
+        min_year: data.min_year,
+        max_year: data.max_year,
       };
       
       await apiClient.put(`/admin/placement/posts/${postId}`, payload);

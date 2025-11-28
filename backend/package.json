@@ -16,6 +16,8 @@
     "create-admin": "node create_admin_user.js",
     "fix-profile": "node fix_missing_profile.js",
     "seed:student": "node seed_student_data.js",
+    "convert:excel": "node scripts/convert-excel-to-json.js",
+    "import:civil-attendance": "node scripts/import-civil-attendance.js",
     "test": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
     "test:watch": "NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js --watch --runInBand"
   },

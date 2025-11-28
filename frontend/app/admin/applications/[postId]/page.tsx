@@ -56,6 +56,8 @@ export default function ApplicationsPage() {
     fetchData();
   }, [postId]);
 
+  const [updateMessage, setUpdateMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
   const handleStatusUpdate = async (id: string, status: string, feedback: string) => {
     try {
       await apiClient.patch(`/admin/applications/${id}/status`, {
@@ -66,9 +68,17 @@ export default function ApplicationsPage() {
       // Refresh applications list
       const response = await apiClient.get(`/admin/applications/post/${postId}`);
       setApplications(response.data.applications || []);
+      
+      // Show success message
+      setUpdateMessage({ type: "success", text: "Application status updated successfully" });
+      setTimeout(() => setUpdateMessage(null), 3000);
     } catch (error: any) {
       console.error("Failed to update application status:", error);
-      alert(error.response?.data?.message || "Failed to update status");
+      setUpdateMessage({ 
+        type: "error", 
+        text: error.response?.data?.message || "Failed to update status" 
+      });
+      setTimeout(() => setUpdateMessage(null), 5000);
       throw error;
     }
   };
@@ -97,10 +107,25 @@ export default function ApplicationsPage() {
         </Link>
       </div>
 
+      {updateMessage && (
+        <div
+          className={`rounded-md p-4 ${
+            updateMessage.type === "success"
+              ? "bg-green-50 text-green-800 border border-green-200"
+              : "bg-red-50 text-red-800 border border-red-200"
+          }`}
+        >
+          {updateMessage.text}
+        </div>
+      )}
+
       <Card>
         <div className="mb-4">
           <p className="text-sm text-gray-600">
             Total Applications: <span className="font-semibold">{applications.length}</span>
+          </p>
+          <p className="text-xs text-gray-500 mt-1">
+            Click "Update Status" on any application to change its status and add feedback
           </p>
         </div>
       </Card>

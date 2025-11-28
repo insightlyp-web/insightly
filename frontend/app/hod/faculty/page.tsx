@@ -69,6 +69,29 @@ export default function FacultyPage() {
     }
   };
 
+  const handleDelete = async (facultyId: string, facultyName: string) => {
+    if (!confirm(`Are you sure you want to delete ${facultyName}? This will unassign them from all courses.`)) {
+      return;
+    }
+
+    try {
+      setMessage(null);
+      const response = await apiClient.delete(`/hod/faculty/${facultyId}`);
+      
+      setMessage({
+        type: "success",
+        text: response.data.message || "Faculty deleted successfully",
+      });
+
+      await fetchFaculty();
+    } catch (error: any) {
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to delete faculty",
+      });
+    }
+  };
+
   const columns = [
     { header: "Name", accessor: "full_name" },
     { header: "Email", accessor: "email" },
@@ -77,6 +100,18 @@ export default function FacultyPage() {
       header: "Created",
       accessor: "created_at",
       render: (value: string) => new Date(value).toLocaleDateString(),
+    },
+    {
+      header: "Actions",
+      accessor: "id",
+      render: (value: string, row: Faculty) => (
+        <button
+          onClick={() => handleDelete(value, row.full_name)}
+          className="text-red-600 hover:text-red-800 text-sm font-medium"
+        >
+          Delete
+        </button>
+      ),
     },
   ];
 
