@@ -11,13 +11,11 @@ ENV/
 .venv
 
 # Environment variables
-.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-backend/.env
 frontend/.env.local
 ml_service/.env
 
