@@ -45,7 +45,15 @@ export default function CreateAttendancePage() {
     }
   };
 
-  const handleSubmit = async (data: { course_id: string; start_time: string; end_time: string }) => {
+  const handleSubmit = async (data: { 
+    course_id: string; 
+    start_time: string; 
+    end_time: string;
+    location_required: boolean;
+    faculty_lat?: number;
+    faculty_lng?: number;
+    allowed_radius?: number;
+  }) => {
     try {
       setLoading(true);
       setMessage(null);
@@ -54,11 +62,20 @@ export default function CreateAttendancePage() {
       const startTime = new Date(data.start_time).toISOString();
       const endTime = new Date(data.end_time).toISOString();
 
-      const response = await apiClient.post<SessionResponse>("/faculty/attendance/sessions", {
+      const requestBody: any = {
         course_id: data.course_id,
         start_time: startTime,
         end_time: endTime,
-      });
+        location_required: data.location_required || false,
+      };
+
+      if (data.location_required && data.faculty_lat !== undefined && data.faculty_lng !== undefined) {
+        requestBody.faculty_lat = data.faculty_lat;
+        requestBody.faculty_lng = data.faculty_lng;
+        requestBody.allowed_radius = data.allowed_radius || 50;
+      }
+
+      const response = await apiClient.post<SessionResponse>("/faculty/attendance/sessions", requestBody);
 
       const session = response.data.session;
       const selectedCourse = courses.find((c) => c.id === data.course_id);

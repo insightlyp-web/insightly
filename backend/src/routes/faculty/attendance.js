@@ -13,11 +13,19 @@ function generateSessionCode() {
 }
 
 // POST /faculty/attendance/sessions
-// Body: { course_id, start_time, end_time }
+// Body: { course_id, start_time, end_time, location_required, faculty_lat, faculty_lng, allowed_radius }
 // start_time, end_time: ISO strings
 router.post("/sessions", requireAuth, requireFaculty, async (req, res) => {
   const facultyId = req.facultyProfile.id;
-  const { course_id, start_time, end_time } = req.body;
+  const { 
+    course_id, 
+    start_time, 
+    end_time, 
+    location_required, 
+    faculty_lat, 
+    faculty_lng, 
+    allowed_radius 
+  } = req.body;
 
   if (!course_id || !start_time || !end_time) {
     return res.status(400).json({ message: "course_id, start_time, end_time required" });
@@ -33,14 +41,41 @@ router.post("/sessions", requireAuth, requireFaculty, async (req, res) => {
       return res.status(403).json({ message: "You are not assigned to this course" });
     }
 
+    // Validate location settings
+    const isLocationRequired = location_required === true || location_required === "true";
+    let finalLat = null;
+    let finalLng = null;
+    let finalRadius = 50; // default radius in meters
+
+    if (isLocationRequired) {
+      if (faculty_lat === undefined || faculty_lng === undefined) {
+        return res.status(400).json({ 
+          message: "faculty_lat and faculty_lng required when location_required is true" 
+        });
+      }
+      finalLat = parseFloat(faculty_lat);
+      finalLng = parseFloat(faculty_lng);
+      
+      if (isNaN(finalLat) || isNaN(finalLng)) {
+        return res.status(400).json({ message: "Invalid latitude or longitude" });
+      }
+
+      if (allowed_radius !== undefined) {
+        finalRadius = parseInt(allowed_radius);
+        if (isNaN(finalRadius) || finalRadius <= 0) {
+          return res.status(400).json({ message: "allowed_radius must be a positive integer" });
+        }
+      }
+    }
+
     const sessionCode = generateSessionCode();
 
     const r = await query(
       `INSERT INTO campus360_dev.attendance_sessions
-       (faculty_id, course_id, session_code, start_time, end_time)
-       VALUES ($1, $2, $3, $4, $5)
-       RETURNING id, session_code, start_time, end_time`,
-      [facultyId, course_id, sessionCode, start_time, end_time]
+       (faculty_id, course_id, session_code, start_time, end_time, location_required, faculty_lat, faculty_lng, allowed_radius)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING id, session_code, start_time, end_time, location_required, faculty_lat, faculty_lng, allowed_radius`,
+      [facultyId, course_id, sessionCode, start_time, end_time, isLocationRequired, finalLat, finalLng, finalRadius]
     );
 
     res.json({

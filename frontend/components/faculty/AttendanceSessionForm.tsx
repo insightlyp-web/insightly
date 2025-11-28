@@ -12,7 +12,15 @@ interface Course {
 
 interface AttendanceSessionFormProps {
   courses: Course[];
-  onSubmit: (data: { course_id: string; start_time: string; end_time: string }) => Promise<void>;
+  onSubmit: (data: { 
+    course_id: string; 
+    start_time: string; 
+    end_time: string;
+    location_required: boolean;
+    faculty_lat?: number;
+    faculty_lng?: number;
+    allowed_radius?: number;
+  }) => Promise<void>;
   loading?: boolean;
 }
 
@@ -44,8 +52,13 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
     course_id: "",
     start_time: getCurrentDateTimeLocal(),
     end_time: getOneHourLater(),
+    location_required: false,
+    allowed_radius: 50,
   });
   const [error, setError] = useState("");
+  const [locationError, setLocationError] = useState("");
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [facultyLocation, setFacultyLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   // Validate end time is after start time
   useEffect(() => {
@@ -71,6 +84,58 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
     setError("");
   };
 
+  const handleLocationToggle = async (enabled: boolean) => {
+    console.log("handleLocationToggle called with:", enabled);
+    
+    // If disabling, do it immediately
+    if (!enabled) {
+      console.log("Disabling location verification");
+      setFormData((prev) => {
+        console.log("Setting location_required to false");
+        return { ...prev, location_required: false };
+      });
+      setFacultyLocation(null);
+      setLocationError("");
+      setLocationLoading(false);
+      return;
+    }
+
+    // If enabling, update state immediately for responsive UI
+    console.log("Enabling location verification");
+    setFormData((prev) => {
+      console.log("Setting location_required to true");
+      return { ...prev, location_required: true };
+    });
+    setLocationError("");
+
+    // Fetch faculty location when enabled
+    setLocationLoading(true);
+    try {
+      console.log("Requesting geolocation...");
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        });
+      });
+
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      console.log("Location obtained:", lat, lng);
+      setFacultyLocation({ lat, lng });
+      setLocationError("");
+    } catch (err: any) {
+      console.error("Location error:", err);
+      setLocationError("Failed to get location. Please enable location permissions.");
+      // Revert the toggle if location fetch fails
+      setFormData((prev) => ({ ...prev, location_required: false }));
+      setFacultyLocation(null);
+    } finally {
+      setLocationLoading(false);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.course_id || !formData.start_time || !formData.end_time) {
@@ -89,8 +154,29 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
       return;
     }
 
+    // Validate location if required
+    if (formData.location_required && !facultyLocation) {
+      setLocationError("Please enable location access to use location verification");
+      return;
+    }
+
     setError("");
-    await onSubmit(formData);
+    setLocationError("");
+
+    const submitData: any = {
+      course_id: formData.course_id,
+      start_time: formData.start_time,
+      end_time: formData.end_time,
+      location_required: formData.location_required,
+    };
+
+    if (formData.location_required && facultyLocation) {
+      submitData.faculty_lat = facultyLocation.lat;
+      submitData.faculty_lng = facultyLocation.lng;
+      submitData.allowed_radius = formData.allowed_radius;
+    }
+
+    await onSubmit(submitData);
   };
 
   return (
@@ -176,6 +262,84 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
           </div>
         </div>
 
+        <div className="border-t border-gray-200 pt-4">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Require Location Verification
+              </label>
+              <p className="text-xs text-gray-500">
+                When enabled, students must be within the specified radius to mark attendance
+              </p>
+            </div>
+            <label
+              className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                formData.location_required ? "bg-blue-600" : "bg-gray-200"
+              } ${loading || (locationLoading && formData.location_required) ? "opacity-50 cursor-not-allowed" : ""}`}
+            >
+              <input
+                type="checkbox"
+                checked={formData.location_required}
+                onChange={(e) => {
+                  console.log("Checkbox changed:", e.target.checked);
+                  handleLocationToggle(e.target.checked);
+                }}
+                disabled={loading || (locationLoading && formData.location_required)}
+                className="sr-only"
+              />
+              <span
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                  formData.location_required ? "translate-x-5" : "translate-x-0"
+                }`}
+              />
+            </label>
+          </div>
+
+          {formData.location_required && (
+            <div className="space-y-3 bg-gray-50 rounded-md p-4 border border-gray-200">
+              {locationLoading && (
+                <div className="text-sm text-blue-600">Getting your location...</div>
+              )}
+              
+              {locationError && (
+                <div className="rounded-md bg-red-50 p-3 border border-red-200">
+                  <p className="text-sm text-red-800">{locationError}</p>
+                </div>
+              )}
+
+              {facultyLocation && !locationError && (
+                <div className="rounded-md bg-green-50 p-3 border border-green-200">
+                  <p className="text-sm text-green-800">
+                    ✓ Location captured: {facultyLocation.lat.toFixed(6)}, {facultyLocation.lng.toFixed(6)}
+                  </p>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Allowed Radius (meters) <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="number"
+                  min="10"
+                  max="1000"
+                  step="10"
+                  value={formData.allowed_radius}
+                  onChange={(e) => {
+                    const radius = parseInt(e.target.value) || 50;
+                    setFormData({ ...formData, allowed_radius: radius });
+                  }}
+                  className="block w-full rounded-md border-gray-200 bg-white px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                  disabled={loading}
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Students must be within this distance (in meters) to mark attendance
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
         {error && (
           <div className="rounded-md bg-red-50 p-3 border border-red-200">
             <p className="text-sm text-red-800">{error}</p>
@@ -186,6 +350,7 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
           <p className="text-sm text-blue-800">
             <strong>Note:</strong> After creating the session, a QR code will be generated. 
             Display it to students so they can scan and mark their attendance.
+            {formData.location_required && " Location verification is enabled for this session."}
           </p>
         </div>
 
