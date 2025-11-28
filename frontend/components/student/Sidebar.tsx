@@ -29,7 +29,7 @@ export function Sidebar() {
         <Image src="/logo.png" alt="Insightly Logo" width={32} height={32} className="rounded" />
         <h1 className="text-xl font-bold text-gray-900">Insightly</h1>
       </div>
-      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto">
+      <nav className="flex-1 space-y-1 px-3 py-4 overflow-y-auto scrollbar-thin">
         {navigation.map((item) => {
           const isActive = pathname === item.href || 
             (item.href !== "/student/dashboard" && pathname?.startsWith(item.href));

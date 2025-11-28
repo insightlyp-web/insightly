@@ -5,6 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Sidebar } from "@/components/faculty/Sidebar";
 import { Header } from "@/components/faculty/Header";
+import { NixiWidget } from "@/components/chatbot/NixiWidget";
 import apiClient from "@/lib/axios";
 import { Spinner } from "@/components/ui/spinner";
 
@@ -109,9 +110,10 @@ export default function FacultyLayout({ children }: { children: React.ReactNode 
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
-        <Header userName={profile.full_name} department={profile.department} />
+        <Header userName={profile.full_name} department={profile.department} role={profile.role} />
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
       </div>
+      <NixiWidget />
     </div>
   );
 }

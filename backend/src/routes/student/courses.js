@@ -32,9 +32,10 @@ router.get("/:id", requireAuth, async (req, res) => {
 
   try {
     const r = await query(
-      `SELECT id, code, name, department, year, faculty_id
-       FROM campus360_dev.courses
-       WHERE id = $1`,
+      `SELECT c.id, c.code, c.name, c.department, c.year, c.faculty_id, p.full_name AS faculty_name
+       FROM campus360_dev.courses c
+       LEFT JOIN campus360_dev.profiles p ON p.id = c.faculty_id
+       WHERE c.id = $1`,
       [courseId]
     );
 

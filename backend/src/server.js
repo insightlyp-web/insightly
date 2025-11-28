@@ -18,6 +18,7 @@ import hodAI from "./routes/hod/ai.js";
 import uploadExcelRoute from "./routes/hod/uploadExcel.js";
 import confirmUploadRoute from "./routes/hod/confirmUpload.js";
 import hodNotifications from "./routes/hod/notifications.js";
+import hodReports from "./routes/hod/reports.js";
 
 
 import studentProfile from "./routes/student/profile.js";
@@ -47,6 +48,7 @@ import adminAI from "./routes/admin/ai.js";
 import authSignup from "./routes/auth/signup.js";
 import authCheckProfile from "./routes/auth/check-profile.js";
 import authCreateProfile from "./routes/auth/create-profile.js";
+import chatbotRoute from "./routes/chatbot.js";
 
 import path from "path";
 import { fileURLToPath } from "url";
@@ -105,6 +107,7 @@ app.use("/hod/ai", hodAI);
 app.use("/hod/upload-excel", uploadExcelRoute);
 app.use("/hod/confirm-upload", confirmUploadRoute);
 app.use("/hod/notifications", hodNotifications);
+app.use("/hod/reports", hodReports);
 app.use("/student/profile", studentProfile);
 app.use("/student/attendance", studentAttendance);
 app.use("/student/timetable", studentTimetable);
@@ -136,6 +139,9 @@ app.use("/admin/ai", adminAI);
 app.use("/auth/signup", authSignup);
 app.use("/auth/check-profile", authCheckProfile);
 app.use("/auth/create-profile", authCreateProfile);
+
+// mount Chatbot route
+app.use("/chatbot", chatbotRoute);
 
 // health
 app.get("/_health", (req, res) => res.json({ status: "ok" }));
