@@ -1,8 +1,8 @@
 // src/services/llmClient.js
-import OpenAI from "openai";
+import Groq from "groq-sdk";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
 });
 
 const NIXI_PERSONALITY_PROMPT = `You are Nixi AI, a sarcastic but helpful AI assistant for college students. Your personality:
@@ -41,8 +41,8 @@ ${context}
 
 Remember: Be helpful, sarcastic, and witty. Provide accurate information from the context.`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-70b-versatile",
       messages: [
         {
           role: "system",
@@ -59,7 +59,7 @@ Remember: Be helpful, sarcastic, and witty. Provide accurate information from th
 
     return completion.choices[0]?.message?.content || "Hmm, I'm having a moment. Try again?";
   } catch (error) {
-    console.error("OpenAI API error:", error);
+    console.error("Groq API error:", error);
     throw new Error("Failed to get response from Nixi AI");
   }
 }
@@ -86,8 +86,8 @@ Query: "${userQuery}"
 
 Respond with ONLY the intent name (e.g., "ATTENDANCE"):`;
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
       messages: [
         {
           role: "system",
@@ -119,7 +119,7 @@ Respond with ONLY the intent name (e.g., "ATTENDANCE"):`;
     
     return validIntents.includes(intent) ? intent : "UNKNOWN";
   } catch (error) {
-    console.error("Intent detection error:", error);
+    console.error("Groq intent detection error:", error);
     return "UNKNOWN";
   }
 }
