@@ -8,6 +8,8 @@ interface Course {
   id: string;
   code: string;
   name: string;
+  year?: number;
+  academic_year?: string;
 }
 
 interface AttendanceSessionFormProps {
@@ -25,36 +27,40 @@ interface AttendanceSessionFormProps {
 }
 
 export function AttendanceSessionForm({ courses, onSubmit, loading }: AttendanceSessionFormProps) {
-  // Helper to get current datetime in local format for datetime-local input
-  const getCurrentDateTimeLocal = () => {
+  // Helper to get current time in HH:MM format
+  const getCurrentTime = () => {
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+    return `${hours}:${minutes}`;
   };
 
-  // Helper to get datetime 1 hour from now
+  // Helper to get time 1 hour from now
   const getOneHourLater = () => {
     const now = new Date();
     now.setHours(now.getHours() + 1);
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day}T${hours}:${minutes}`;
+    return `${hours}:${minutes}`;
+  };
+
+  // Helper to combine today's date with a time string
+  const combineDateAndTime = (time: string): string => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}T${time}`;
   };
 
   const [formData, setFormData] = useState({
     course_id: "",
-    start_time: getCurrentDateTimeLocal(),
+    start_time: getCurrentTime(),
     end_time: getOneHourLater(),
     location_required: false,
     allowed_radius: 50,
   });
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [error, setError] = useState("");
   const [locationError, setLocationError] = useState("");
   const [locationLoading, setLocationLoading] = useState(false);
@@ -63,9 +69,12 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
   // Validate end time is after start time
   useEffect(() => {
     if (formData.start_time && formData.end_time) {
-      const start = new Date(formData.start_time);
-      const end = new Date(formData.end_time);
-      if (end <= start) {
+      const [startHours, startMinutes] = formData.start_time.split(':').map(Number);
+      const [endHours, endMinutes] = formData.end_time.split(':').map(Number);
+      const startTotal = startHours * 60 + startMinutes;
+      const endTotal = endHours * 60 + endMinutes;
+      
+      if (endTotal <= startTotal) {
         setError("End time must be after start time");
       } else {
         setError("");
@@ -74,7 +83,7 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
   }, [formData.start_time, formData.end_time]);
 
   const handleStartNow = () => {
-    const now = getCurrentDateTimeLocal();
+    const now = getCurrentTime();
     const oneHourLater = getOneHourLater();
     setFormData({
       ...formData,
@@ -85,15 +94,9 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
   };
 
   const handleLocationToggle = async (enabled: boolean) => {
-    console.log("handleLocationToggle called with:", enabled);
-    
     // If disabling, do it immediately
     if (!enabled) {
-      console.log("Disabling location verification");
-      setFormData((prev) => {
-        console.log("Setting location_required to false");
-        return { ...prev, location_required: false };
-      });
+      setFormData((prev) => ({ ...prev, location_required: false }));
       setFacultyLocation(null);
       setLocationError("");
       setLocationLoading(false);
@@ -101,17 +104,12 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
     }
 
     // If enabling, update state immediately for responsive UI
-    console.log("Enabling location verification");
-    setFormData((prev) => {
-      console.log("Setting location_required to true");
-      return { ...prev, location_required: true };
-    });
+    setFormData((prev) => ({ ...prev, location_required: true }));
     setLocationError("");
 
     // Fetch faculty location when enabled
     setLocationLoading(true);
     try {
-      console.log("Requesting geolocation...");
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
           enableHighAccuracy: true,
@@ -122,7 +120,6 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
 
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
-      console.log("Location obtained:", lat, lng);
       setFacultyLocation({ lat, lng });
       setLocationError("");
     } catch (err: any) {
@@ -147,9 +144,13 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
       return;
     }
 
-    const start = new Date(formData.start_time);
-    const end = new Date(formData.end_time);
-    if (end <= start) {
+    // Validate time
+    const [startHours, startMinutes] = formData.start_time.split(':').map(Number);
+    const [endHours, endMinutes] = formData.end_time.split(':').map(Number);
+    const startTotal = startHours * 60 + startMinutes;
+    const endTotal = endHours * 60 + endMinutes;
+    
+    if (endTotal <= startTotal) {
       setError("End time must be after start time");
       return;
     }
@@ -163,10 +164,14 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
     setError("");
     setLocationError("");
 
+    // Combine today's date with the selected times
+    const startDateTime = combineDateAndTime(formData.start_time);
+    const endDateTime = combineDateAndTime(formData.end_time);
+
     const submitData: any = {
       course_id: formData.course_id,
-      start_time: formData.start_time,
-      end_time: formData.end_time,
+      start_time: startDateTime,
+      end_time: endDateTime,
       location_required: formData.location_required,
     };
 
@@ -197,6 +202,8 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
             required
             value={formData.course_id}
             onChange={(e) => {
+              const selected = courses.find(c => c.id === e.target.value);
+              setSelectedCourse(selected || null);
               setFormData({ ...formData, course_id: e.target.value });
               setError("");
             }}
@@ -210,6 +217,14 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
               </option>
             ))}
           </select>
+          {selectedCourse && (selectedCourse.year || selectedCourse.academic_year) && (
+            <div className="mt-2 text-sm text-gray-600">
+              <span className="font-medium">Year:</span>{" "}
+              {selectedCourse.year ? `Year ${selectedCourse.year}` : ""}
+              {selectedCourse.year && selectedCourse.academic_year ? " • " : ""}
+              {selectedCourse.academic_year ? `Academic Year: ${selectedCourse.academic_year}` : ""}
+            </div>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -227,18 +242,22 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
                 Start Now
               </button>
             </div>
-            <input
-              type="datetime-local"
-              required
-              value={formData.start_time}
-              onChange={(e) => {
-                setFormData({ ...formData, start_time: e.target.value });
-                setError("");
-              }}
-              min={getCurrentDateTimeLocal()}
-              className="block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-              disabled={loading}
-            />
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 font-medium">
+                {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+              </span>
+              <input
+                type="time"
+                required
+                value={formData.start_time}
+                onChange={(e) => {
+                  setFormData({ ...formData, start_time: e.target.value });
+                  setError("");
+                }}
+                className="block flex-1 rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
             <p className="text-xs text-gray-500 mt-1">When students can start marking attendance</p>
           </div>
 
@@ -246,18 +265,22 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
             <label className="block text-sm font-medium text-gray-700 mb-1">
               End Time <span className="text-red-500">*</span>
             </label>
-            <input
-              type="datetime-local"
-              required
-              value={formData.end_time}
-              onChange={(e) => {
-                setFormData({ ...formData, end_time: e.target.value });
-                setError("");
-              }}
-              min={formData.start_time || getCurrentDateTimeLocal()}
-              className="block w-full rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-              disabled={loading}
-            />
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-gray-600 font-medium">
+                {new Date().toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+              </span>
+              <input
+                type="time"
+                required
+                value={formData.end_time}
+                onChange={(e) => {
+                  setFormData({ ...formData, end_time: e.target.value });
+                  setError("");
+                }}
+                className="block flex-1 rounded-md border-gray-200 bg-gray-50 px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
             <p className="text-xs text-gray-500 mt-1">When attendance marking closes</p>
           </div>
         </div>
@@ -281,7 +304,6 @@ export function AttendanceSessionForm({ courses, onSubmit, loading }: Attendance
                 type="checkbox"
                 checked={formData.location_required}
                 onChange={(e) => {
-                  console.log("Checkbox changed:", e.target.checked);
                   handleLocationToggle(e.target.checked);
                 }}
                 disabled={loading || (locationLoading && formData.location_required)}

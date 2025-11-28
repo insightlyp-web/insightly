@@ -11,6 +11,8 @@ interface Course {
   id: string;
   code: string;
   name: string;
+  year?: number;
+  academic_year?: string;
 }
 
 interface SessionResponse {

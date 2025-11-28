@@ -12,7 +12,7 @@ router.get("/", requireAuth, requireFaculty, async (req, res) => {
   const facultyId = req.facultyProfile.id;
   try {
     const r = await query(
-      `SELECT id, code, name, department, year
+      `SELECT id, code, name, department, year, academic_year
        FROM campus360_dev.courses
        WHERE faculty_id = $1
        ORDER BY code`,
