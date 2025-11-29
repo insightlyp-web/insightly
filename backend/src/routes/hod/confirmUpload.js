@@ -8,7 +8,6 @@ import { query } from "../../config/db.js";
 import { upsertMultipleFaculty } from "../../services/facultyService.js";
 import { upsertMultipleStudents } from "../../services/studentService.js";
 import { upsertMultipleCourses } from "../../services/courseService.js";
-import { seedMultipleAttendance } from "../../services/attendanceSeeder.js";
 import { generateEmail } from "../../utils/generateEmail.js";
 
 const router = express.Router();
@@ -112,13 +111,13 @@ router.post("/", requireAuth, requireHOD, async (req, res) => {
     
     console.log(`[confirm-upload] Created ${enrollmentCount} enrollments`);
     
-    // Step 5: Seed attendance
-    const attendanceResults = await seedMultipleAttendance(
-      students,
-      studentMap,
-      courseMap,
-      metadata
-    );
+    // Step 5: Attendance seeding is now handled separately via attendance import scripts
+    // Skipping attendance seeding in confirm upload to keep it simple
+    const attendanceResults = {
+      added: 0,
+      updated: 0,
+      records: []
+    };
     
     // Return summary
     res.json({
