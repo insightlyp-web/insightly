@@ -39,7 +39,7 @@ export default function Hero() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-xl text-slate-600 max-w-lg"
                     >
-                        AI-powered attendance, academics & placements — all connected in one secure Supabase cloud.
+                        AI-powered attendance, internships & placements — all connected in one secure Supabase cloud.
                     </motion.p>
                 </div>
 

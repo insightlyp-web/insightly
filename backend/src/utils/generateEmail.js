@@ -19,18 +19,41 @@ export function cleanName(name) {
 }
 
 /**
- * Generate email from name
+ * Generate email from name (short format: first_name.last_initial)
  * @param {string} name - Full name
  * @param {string} domain - Email domain (default: 'insightly.com')
  * @returns {string} - Generated email
  */
 export function generateEmail(name, domain = 'insightly.com') {
-  const cleaned = cleanName(name);
-  if (!cleaned) {
+  if (!name || typeof name !== 'string') {
     // Fallback: use timestamp if name is invalid
     return `user.${Date.now()}@${domain}`;
   }
-  return `${cleaned}@${domain}`;
+  
+  const parts = name.trim().toLowerCase().split(/\s+/).filter(p => p.length > 0);
+  
+  if (parts.length === 0) {
+    return `user.${Date.now()}@${domain}`;
+  }
+  
+  // Get first name
+  const firstName = parts[0].replace(/[^a-z0-9]/g, '');
+  
+  // Get first letter of last name (or first name if only one part)
+  let lastInitial = '';
+  if (parts.length > 1) {
+    const lastName = parts[parts.length - 1].replace(/[^a-z0-9]/g, '');
+    lastInitial = lastName.charAt(0);
+  } else {
+    // If only one name, use first letter of first name
+    lastInitial = firstName.charAt(0);
+  }
+  
+  if (!firstName || !lastInitial) {
+    return `user.${Date.now()}@${domain}`;
+  }
+  
+  return `${firstName}.${lastInitial}@${domain}`;
 }
 
 /**

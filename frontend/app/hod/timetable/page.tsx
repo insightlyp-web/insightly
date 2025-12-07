@@ -94,10 +94,10 @@ export default function TimetablePage() {
 
       if (editingId) {
         await apiClient.put(`/hod/timetable/${editingId}`, submitData);
-        setMessage({ type: "success", text: "Timetable entry updated successfully" });
+        setMessage({ type: "success", text: "✅ Timetable entry updated successfully!" });
       } else {
         await apiClient.post("/hod/timetable", submitData);
-        setMessage({ type: "success", text: "Timetable entry created successfully" });
+        setMessage({ type: "success", text: "✅ Timetable entry created successfully! Students can now see it in their dashboard." });
       }
 
       setFormData({ day_of_week: "Monday", start_time: "", end_time: "", course_id: "", room_no: "" });

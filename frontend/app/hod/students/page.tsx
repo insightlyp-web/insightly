@@ -25,6 +25,8 @@ export default function StudentsPage() {
   const [uploading, setUploading] = useState(false);
   const [uploadingResume, setUploadingResume] = useState<string | null>(null);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<{ studentId: string; studentName: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchStudents();
@@ -115,9 +117,33 @@ export default function StudentsPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!deleteConfirm) return;
+
+    try {
+      setDeleting(true);
+      await apiClient.delete(`/hod/students/${deleteConfirm.studentId}`);
+
+      setMessage({
+        type: "success",
+        text: `Student "${deleteConfirm.studentName}" deleted successfully`,
+      });
+
+      setDeleteConfirm(null);
+      await fetchStudents();
+    } catch (error: any) {
+      setMessage({
+        type: "error",
+        text: error.response?.data?.message || "Failed to delete student",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const columns = [
     { header: "Roll Number", accessor: "roll_number", render: (value: string) => value || "-" },
-    { header: "Name", accessor: "full_name" },
+    { header: "Name", accessor: "full_name", render: (value: string) => <span className="truncate overflow-hidden text-ellipsis max-w-[180px] block" title={value}>{value}</span> },
     { header: "Academic Year", accessor: "academic_year", render: (value: string) => value || "-" },
     { header: "Year", accessor: "student_year", render: (value: string) => value || "-" },
     { header: "Email", accessor: "email" },
@@ -167,6 +193,31 @@ export default function StudentsPage() {
       accessor: "created_at",
       render: (value: string) => new Date(value).toLocaleDateString(),
     },
+    {
+      header: "Actions",
+      accessor: "id",
+      render: (value: string, row: Student) => (
+        <button
+          onClick={() => setDeleteConfirm({ studentId: value, studentName: row.full_name })}
+          className="text-red-600 hover:text-red-800 transition-colors"
+          title="Delete student"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
+        </button>
+      ),
+    },
   ];
 
   return (
@@ -203,6 +254,34 @@ export default function StudentsPage() {
         </h2>
         <Table columns={columns} data={students} loading={loading} />
       </div>
+
+      {/* Delete Confirmation Modal */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">Delete Student</h3>
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure you want to delete <strong>{deleteConfirm.studentName}</strong>? This action cannot be undone.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setDeleteConfirm(null)}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+                disabled={deleting}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={deleting}
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

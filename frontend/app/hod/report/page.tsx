@@ -104,31 +104,31 @@ export default function ReportPage() {
   };
 
   const weeklyColumns = [
-    { key: "week", label: "Week" },
-    { key: "total_sessions", label: "Total Sessions" },
-    { key: "total_courses", label: "Courses" },
-    { key: "total_students", label: "Students" },
-    { key: "total_attendance_records", label: "Attendance Records" },
-    { key: "avg_attendance_percentage", label: "Avg Attendance %" },
+    { header: "Week", accessor: "week" },
+    { header: "Total Sessions", accessor: "total_sessions" },
+    { header: "Courses", accessor: "total_courses" },
+    { header: "Students", accessor: "total_students" },
+    { header: "Attendance Records", accessor: "total_attendance_records" },
+    { header: "Avg Attendance %", accessor: "avg_attendance_percentage" },
   ];
 
   const monthlyColumns = [
-    { key: "month", label: "Month" },
-    { key: "total_sessions", label: "Total Sessions" },
-    { key: "total_courses", label: "Courses" },
-    { key: "total_students", label: "Students" },
-    { key: "total_attendance_records", label: "Attendance Records" },
-    { key: "avg_attendance_percentage", label: "Avg Attendance %" },
+    { header: "Month", accessor: "month" },
+    { header: "Total Sessions", accessor: "total_sessions" },
+    { header: "Courses", accessor: "total_courses" },
+    { header: "Students", accessor: "total_students" },
+    { header: "Attendance Records", accessor: "total_attendance_records" },
+    { header: "Avg Attendance %", accessor: "avg_attendance_percentage" },
   ];
 
   const courseBreakdownColumns = [
-    { key: "period", label: activeTab === "weekly" ? "Week" : "Month" },
-    { key: "course_code", label: "Course Code" },
-    { key: "course_name", label: "Course Name" },
-    { key: "total_sessions", label: "Sessions" },
-    { key: "total_students", label: "Students" },
-    { key: "total_attendance_records", label: "Records" },
-    { key: "avg_attendance_percentage", label: "Avg %" },
+    { header: activeTab === "weekly" ? "Week" : "Month", accessor: "period" },
+    { header: "Course Code", accessor: "course_code" },
+    { header: "Course Name", accessor: "course_name" },
+    { header: "Sessions", accessor: "total_sessions" },
+    { header: "Students", accessor: "total_students" },
+    { header: "Records", accessor: "total_attendance_records" },
+    { header: "Avg %", accessor: "avg_attendance_percentage" },
   ];
 
   const weeklyTableData = weeklyData.map((week) => {

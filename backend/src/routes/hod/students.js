@@ -18,6 +18,29 @@ function parseExcel(filePath) {
   return XLSX.utils.sheet_to_json(sheet);
 }
 
+// Helper function to find column value with case-insensitive matching and synonyms
+function getColumnValue(row, synonyms) {
+  // First try exact match (case-insensitive)
+  for (const key in row) {
+    const lowerKey = key.toLowerCase().trim();
+    for (const synonym of synonyms) {
+      if (lowerKey === synonym.toLowerCase().trim()) {
+        return row[key];
+      }
+    }
+  }
+  // Try partial match
+  for (const key in row) {
+    const lowerKey = key.toLowerCase().trim();
+    for (const synonym of synonyms) {
+      if (lowerKey.includes(synonym.toLowerCase().trim()) || synonym.toLowerCase().trim().includes(lowerKey)) {
+        return row[key];
+      }
+    }
+  }
+  return null;
+}
+
 router.post("/upload", requireAuth, requireHOD, upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ message: "File required" });
 
@@ -42,16 +65,46 @@ router.post("/upload", requireAuth, requireHOD, upload.single("file"), async (re
       return res.status(400).json({ message: "Only CSV or Excel allowed" });
     }
 
+    // Validate required columns
+    if (rows.length === 0) {
+      fs.unlinkSync(filePath);
+      return res.status(400).json({ message: "File is empty" });
+    }
+
+    // Check for required columns in first row
+    const firstRow = rows[0];
+    const missingColumns = [];
+    
+    const fullNameValue = getColumnValue(firstRow, ["full_name", "name", "full name", "student name"]);
+    const emailValue = getColumnValue(firstRow, ["email"]);
+    
+    if (!fullNameValue) missingColumns.push("full_name");
+    if (!emailValue) missingColumns.push("email");
+    
+    if (missingColumns.length > 0) {
+      fs.unlinkSync(filePath);
+      return res.status(400).json({ 
+        message: `Required columns missing: ${missingColumns.join(", ")}` 
+      });
+    }
+
     let inserted = 0;
-    for (const row of rows) {
-      const full_name = (row.full_name || row.name || row["Full Name"] || "").trim();
-      const email = (row.email || row["Email"] || "").trim() || null;
-      const phone = (row.phone || row["Phone"] || "").trim() || null;
-      const academic_year = (row.academic_year || row["Academic Year"] || row["Academic_Year"] || "").trim() || null;
-      const student_year = (row.student_year || row["Student Year"] || row["Student_Year"] || row.year || "").trim().toUpperCase() || null;
-      const roll_number = (row.roll_number || row["Roll Number"] || row["Roll_Number"] || row.rollno || row.roll || "").trim() || null;
+    const errors = [];
+    
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
       
-      if (!full_name || !email) continue;
+      const full_name = (getColumnValue(row, ["full_name", "name", "full name", "student name"]) || "").toString().trim();
+      const email = (getColumnValue(row, ["email"]) || "").toString().trim() || null;
+      const phone = (getColumnValue(row, ["phone", "mobile", "contact"]) || "").toString().trim() || null;
+      const academic_year = (getColumnValue(row, ["academic_year", "academic year", "academic_year"]) || "").toString().trim() || null;
+      const student_year = (getColumnValue(row, ["student_year", "student year", "student_year", "year"]) || "").toString().trim().toUpperCase() || null;
+      const roll_number = (getColumnValue(row, ["roll_number", "roll number", "roll_number", "rollno", "roll", "roll no"]) || "").toString().trim() || null;
+      
+      if (!full_name || !email) {
+        errors.push(`Row ${i + 2}: Missing full_name or email`);
+        continue;
+      }
       if (student_year && !['I', 'II', 'III', 'IV'].includes(student_year)) {
         console.warn(`Invalid student_year "${student_year}" for ${full_name}, skipping...`);
         continue;
@@ -76,7 +129,12 @@ router.post("/upload", requireAuth, requireHOD, upload.single("file"), async (re
     }
 
     fs.unlinkSync(filePath);
-    res.json({ message: "Upload complete", total: rows.length, inserted });
+    res.json({ 
+      message: "Upload complete", 
+      total: rows.length, 
+      inserted,
+      errors: errors.length > 0 ? errors.slice(0, 10) : undefined // Show first 10 errors
+    });
   } catch (err) {
     console.error("UPLOAD STUDENTS ERROR:", err);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
@@ -156,6 +214,65 @@ router.post("/:studentId/resume", requireAuth, requireHOD, upload.single("resume
     console.error("Resume upload error:", err);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     res.status(500).json({ message: "Failed to upload resume", error: err.message });
+  }
+});
+
+router.delete("/:studentId", requireAuth, requireHOD, async (req, res) => {
+  const { studentId } = req.params;
+  
+  try {
+    // Verify student belongs to HOD's department
+    const studentCheck = await query(
+      `SELECT id, department, resume_url FROM campus360_dev.profiles WHERE id = $1 AND role = 'student'`,
+      [studentId]
+    );
+
+    if (studentCheck.rows.length === 0) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    if (studentCheck.rows[0].department !== req.department) {
+      return res.status(403).json({ message: "Student does not belong to your department" });
+    }
+
+    // Delete resume file if exists
+    const resumeUrl = studentCheck.rows[0].resume_url;
+    if (resumeUrl && fs.existsSync(resumeUrl)) {
+      try {
+        fs.unlinkSync(resumeUrl);
+      } catch (err) {
+        console.warn("Failed to delete resume file:", err);
+      }
+    }
+
+    // Delete student enrollments first (foreign key constraint)
+    await query(
+      `DELETE FROM campus360_dev.enrollments WHERE student_id = $1`,
+      [studentId]
+    );
+
+    // Delete attendance records
+    await query(
+      `DELETE FROM campus360_dev.attendance_records WHERE student_id = $1`,
+      [studentId]
+    );
+
+    // Delete placement applications
+    await query(
+      `DELETE FROM campus360_dev.placement_applications WHERE student_id = $1`,
+      [studentId]
+    );
+
+    // Delete student profile
+    await query(
+      `DELETE FROM campus360_dev.profiles WHERE id = $1`,
+      [studentId]
+    );
+
+    res.json({ message: "Student deleted successfully" });
+  } catch (err) {
+    console.error("Delete student error:", err);
+    res.status(500).json({ message: "Failed to delete student", error: err.message });
   }
 });
 

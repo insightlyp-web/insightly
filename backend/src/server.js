@@ -57,7 +57,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(cors());
+// CORS configuration - allow credentials and all origins for now
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true, // Allow credentials (cookies, authorization headers)
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+}));
 app.use(express.json());
 
 // Serve uploaded files (resumes, etc.) - must be before other routes

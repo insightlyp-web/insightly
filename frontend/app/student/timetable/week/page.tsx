@@ -44,7 +44,7 @@ export default function WeeklyTimetablePage() {
   const fetchTimetable = async () => {
     try {
       setLoading(true);
-      const response = await apiClient.get("/student/timetable");
+      const response = await apiClient.get("/student/timetable/week");
       setTimetable(response.data.timetable || []);
     } catch (error: any) {
       console.error("Failed to fetch timetable:", error);

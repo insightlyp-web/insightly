@@ -10,6 +10,7 @@ interface Post {
   company: string;
   job_type: string;
   package: string;
+  stipend?: string;
   required_skills: string[];
   deadline: string;
   description: string;
@@ -32,6 +33,7 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
     company: "",
     job_type: "fulltime",
     package: "",
+    stipend: "",
     required_skills: [],
     deadline: "",
     description: "",
@@ -43,13 +45,11 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
   });
 
   const [skillsInput, setSkillsInput] = useState("");
-  const [departmentsInput, setDepartmentsInput] = useState("");
 
   useEffect(() => {
     if (initialValues) {
       setFormData(initialValues);
       setSkillsInput(initialValues.required_skills?.join(", ") || "");
-      setDepartmentsInput(initialValues.eligible_departments?.join(", ") || "");
     }
   }, [initialValues]);
 
@@ -61,15 +61,10 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
       .map((s) => s.trim())
       .filter((s) => s.length > 0);
 
-    const departments = departmentsInput
-      .split(",")
-      .map((d) => d.trim())
-      .filter((d) => d.length > 0);
-
     await onSubmit({
       ...formData,
       required_skills: skills,
-      eligible_departments: departments.length > 0 ? departments : undefined,
+      eligible_departments: formData.eligible_departments && formData.eligible_departments.length > 0 ? formData.eligible_departments : undefined,
     });
   };
 
@@ -115,7 +110,7 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
               id="job_type"
               required
               value={formData.job_type}
-              onChange={(e) => setFormData({ ...formData, job_type: e.target.value })}
+              onChange={(e) => setFormData({ ...formData, job_type: e.target.value, stipend: e.target.value === "fulltime" ? "" : formData.stipend })}
               className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
               disabled={loading}
             >
@@ -124,21 +119,55 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
             </select>
           </div>
 
-          <div>
-            <label htmlFor="package" className="block text-sm font-medium text-gray-700">
-              Package *
-            </label>
-            <input
-              type="text"
-              id="package"
-              required
-              value={formData.package}
-              onChange={(e) => setFormData({ ...formData, package: e.target.value })}
-              placeholder="e.g., 10 LPA, 30k/month"
-              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-              disabled={loading}
-            />
-          </div>
+          {formData.job_type === "fulltime" ? (
+            <div>
+              <label htmlFor="package" className="block text-sm font-medium text-gray-700">
+                Package (LPA) *
+              </label>
+              <input
+                type="text"
+                id="package"
+                required
+                value={formData.package}
+                onChange={(e) => setFormData({ ...formData, package: e.target.value })}
+                placeholder="e.g., 10 LPA"
+                className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                disabled={loading}
+              />
+            </div>
+          ) : (
+            <>
+              <div>
+                <label htmlFor="package" className="block text-sm font-medium text-gray-700">
+                  Package (LPA)
+                </label>
+                <input
+                  type="text"
+                  id="package"
+                  value={formData.package}
+                  onChange={(e) => setFormData({ ...formData, package: e.target.value })}
+                  placeholder="e.g., 10 LPA (optional)"
+                  className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  disabled={loading}
+                />
+              </div>
+              <div>
+                <label htmlFor="stipend" className="block text-sm font-medium text-gray-700">
+                  Stipend (Internship) *
+                </label>
+                <input
+                  type="text"
+                  id="stipend"
+                  required
+                  value={formData.stipend || ""}
+                  onChange={(e) => setFormData({ ...formData, stipend: e.target.value })}
+                  placeholder="e.g., 30k/month, 5000/week"
+                  className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+                  disabled={loading}
+                />
+              </div>
+            </>
+          )}
         </div>
 
         <div>
@@ -193,21 +222,35 @@ export function PostForm({ initialValues, onSubmit, loading }: PostFormProps) {
           <h3 className="text-lg font-medium text-gray-900 mb-4">Eligibility Criteria</h3>
           
           <div>
-            <label htmlFor="departments" className="block text-sm font-medium text-gray-700">
-              Eligible Departments (comma-separated, leave empty for all)
+            <label htmlFor="departments" className="block text-sm font-medium text-gray-700 mb-2">
+              Eligible Departments (select multiple, leave empty for all)
             </label>
-            <input
-              type="text"
+            <select
               id="departments"
-              value={departmentsInput}
-              onChange={(e) => setDepartmentsInput(e.target.value)}
-              placeholder="e.g., CS, ECE, Civil"
-              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+              multiple
+              value={formData.eligible_departments || []}
+              onChange={(e) => {
+                const selected = Array.from(e.target.selectedOptions, option => option.value);
+                setFormData({ ...formData, eligible_departments: selected });
+              }}
+              className="mt-1 block w-full rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 min-h-[100px]"
               disabled={loading}
-            />
+            >
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="Civil">Civil</option>
+              <option value="EEE">EEE</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="IT">IT</option>
+            </select>
             <p className="mt-1 text-xs text-gray-500">
-              Leave empty to allow all departments
+              Hold Ctrl/Cmd to select multiple departments. Leave empty to allow all departments.
             </p>
+            {formData.eligible_departments && formData.eligible_departments.length > 0 && (
+              <p className="mt-2 text-sm text-blue-600">
+                Selected: {formData.eligible_departments.join(", ")}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-3 gap-4 mt-4">

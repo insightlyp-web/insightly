@@ -24,7 +24,7 @@ export function NixiWindow({ onClose }: { onClose: () => void }) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      text: "Hey! 👋 I'm Nixi AI, your sarcastic but helpful college assistant. What's up?",
+      text: "Hey! 👋 I'm Nixi AI, your helpful college assistant. What's up?",
       sender: "nixi",
       timestamp: new Date(),
     },
@@ -107,7 +107,7 @@ export function NixiWindow({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <h3 className="font-bold text-lg">Nixi AI</h3>
-            <p className="text-xs text-blue-100">Your sarcastic assistant</p>
+            <p className="text-xs text-blue-100">Your Insightly AI Assistant</p>
           </div>
         </div>
         <button

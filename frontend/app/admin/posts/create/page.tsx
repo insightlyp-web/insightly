@@ -37,6 +37,7 @@ export default function CreatePostPage() {
         company_name: data.company, // Map 'company' to 'company_name'
         job_type: data.job_type,
         package: data.package,
+        stipend: (data as any).stipend,
         required_skills: data.required_skills,
         deadline: data.deadline,
         description: data.description,
