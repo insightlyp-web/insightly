@@ -23,12 +23,12 @@ export default function Hero() {
 
             <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center relative z-10">
                 {/* Text Content */}
-                <div className="space-y-8">
+                <div className="space-y-6 md:space-y-8 text-center lg:text-left">
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="text-6xl md:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1]"
+                        className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.1] md:leading-[1.1]"
                     >
                         Run your campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">smart.</span>
                     </motion.h1>
@@ -37,7 +37,7 @@ export default function Hero() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-xl text-slate-600 max-w-lg"
+                        className="text-lg md:text-xl text-slate-600 max-w-lg mx-auto lg:mx-0"
                     >
                         AI-powered attendance, internships & placements — all connected in one secure Supabase cloud.
                     </motion.p>
@@ -48,7 +48,7 @@ export default function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1 }}
-                    className="relative h-[600px] w-full flex items-center justify-center"
+                    className="relative h-[400px] lg:h-[600px] w-full flex items-center justify-center mt-8 lg:mt-0"
                 >
                     {/* 3D University Silhouette */}
                     <div className="absolute inset-0 flex items-center justify-center opacity-80">
