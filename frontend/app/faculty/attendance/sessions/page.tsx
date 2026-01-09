@@ -23,12 +23,23 @@ export default function SessionsPage() {
 
   useEffect(() => {
     fetchSessions();
+    
+    // Auto-refresh every 10 seconds to show real-time present count
+    const interval = setInterval(() => {
+      fetchSessions();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchSessions = async () => {
     try {
-      setLoading(true);
+      // Only show loading spinner on initial load
+      if (sessions.length === 0) {
+        setLoading(true);
+      }
       const response = await apiClient.get("/faculty/attendance/sessions");
+      console.log("Sessions response:", response.data);
       setSessions(response.data.sessions || []);
     } catch (error: any) {
       console.error("Failed to fetch sessions:", error);
@@ -53,7 +64,14 @@ export default function SessionsPage() {
     {
       header: "Present",
       accessor: "present_count",
-      render: (value: number) => value || 0,
+      render: (value: number | string) => {
+        const count = typeof value === 'string' ? parseInt(value) : (value || 0);
+        return (
+          <span className={`font-semibold ${count > 0 ? 'text-green-600' : 'text-gray-500'}`}>
+            {count}
+          </span>
+        );
+      },
     },
     {
       header: "Actions",

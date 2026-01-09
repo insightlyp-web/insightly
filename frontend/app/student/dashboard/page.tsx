@@ -51,16 +51,22 @@ export default function StudentDashboard() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    // Prevent duplicate calls in React StrictMode
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
     fetchDashboardData();
+    
+    // Auto-refresh every 60 seconds to catch new timetable entries
+    const interval = setInterval(() => {
+      fetchDashboardData();
+    }, 60000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchDashboardData = async () => {
     try {
-      setLoading(true);
+      // Only show loading spinner on initial load
+      if (!data) {
+        setLoading(true);
+      }
       const response = await apiClient.get("/student/dashboard");
       console.log("Dashboard API response:", response.data);
 

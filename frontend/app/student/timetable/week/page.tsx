@@ -43,7 +43,10 @@ export default function WeeklyTimetablePage() {
 
   const fetchTimetable = async () => {
     try {
-      setLoading(true);
+      // Only show loading spinner on initial load
+      if (timetable.length === 0) {
+        setLoading(true);
+      }
       const response = await apiClient.get("/student/timetable/week");
       setTimetable(response.data.timetable || []);
     } catch (error: any) {

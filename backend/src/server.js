@@ -3,7 +3,14 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { execSync } from "child_process";
+import { readFileSync } from "fs";
+import { fileURLToPath } from "url";
+import path from "path";
 dotenv.config();
+
+// Fix ESM dirname (ONLY ONCE at the top)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import analyticsRoute from "./routes/hod/analytics.js";
 
@@ -48,13 +55,8 @@ import adminAI from "./routes/admin/ai.js";
 import authSignup from "./routes/auth/signup.js";
 import authCheckProfile from "./routes/auth/check-profile.js";
 import authCreateProfile from "./routes/auth/create-profile.js";
+import { query } from "./config/db.js";
 import chatbotRoute from "./routes/chatbot.js";
-
-import path from "path";
-import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 // CORS configuration - allow credentials and all origins for now
@@ -155,8 +157,37 @@ app.get("/_health", (req, res) => res.json({ status: "ok" }));
 // Export app for testing
 export default app;
 
+// Run migration on startup (non-blocking)
+async function runStartupMigrations() {
+  try {
+    const migrationPath = path.join(__dirname, '..', 'sql', '011_add_stipend_to_placement_posts.sql');
+    
+    try {
+      const migrationSQL = readFileSync(migrationPath, 'utf8');
+      await query(migrationSQL);
+      console.log('✅ Migration: stipend column added (or already exists)');
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        // Migration file doesn't exist, skip
+        console.log('ℹ️  Migration file not found, skipping');
+      } else if (err.code === '42703' || err.message.includes('already exists') || err.message.includes('duplicate')) {
+        // Column already exists, that's fine
+        console.log('✅ Migration: stipend column already exists');
+      } else {
+        console.warn('⚠️  Migration warning:', err.message);
+      }
+    }
+  } catch (err) {
+    // Ignore migration errors on startup
+    console.warn('⚠️  Could not run startup migrations:', err.message);
+  }
+}
+
 // Only start server if not in test mode
 if (process.env.NODE_ENV !== "test") {
+  // Run migrations before starting server
+  runStartupMigrations();
+  
   const PORT = process.env.PORT || 3001;
   
   const server = app.listen(PORT, () => {

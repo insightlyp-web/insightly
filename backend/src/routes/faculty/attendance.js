@@ -103,10 +103,19 @@ router.get("/sessions", requireAuth, requireFaculty, async (req, res) => {
     }
 
     const r = await query(
-      `SELECT s.id, s.session_code, s.start_time, s.end_time, c.code AS course_code, c.name AS course_name
+      `SELECT 
+        s.id, 
+        s.session_code, 
+        s.start_time, 
+        s.end_time, 
+        c.code AS course_code, 
+        c.name AS course_name,
+        COUNT(DISTINCT ar.id) AS present_count
        FROM campus360_dev.attendance_sessions s
        JOIN campus360_dev.courses c ON c.id = s.course_id
+       LEFT JOIN campus360_dev.attendance_records ar ON ar.session_id = s.id
        ${where}
+       GROUP BY s.id, s.session_code, s.start_time, s.end_time, c.code, c.name
        ORDER BY s.start_time DESC`,
       params
     );

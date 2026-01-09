@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { supabase } from './supabase';
 
-const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'https://insightly-backend-f847.onrender.com';
 
 // Create axios instance
 const apiClient = axios.create({

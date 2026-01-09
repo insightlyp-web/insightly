@@ -9,6 +9,7 @@
     "migrate:students": "node migrate-student-fields.js",
     "migrate:ai": "node migrate-ai-fields.js",
     "migrate:location": "node migrate-location-fields.js",
+    "migrate:stipend": "node run-migration.js",
     "seed": "node src/seed/seedMockData.js",
     "seed:hod": "node src/seed/seedHODData.js",
     "seed:student-faculty": "node src/seed/seedStudentFacultyData.js",

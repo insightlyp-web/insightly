@@ -23,16 +23,22 @@ export default function TodayTimetablePage() {
   const hasFetched = useRef(false);
 
   useEffect(() => {
-    // Prevent duplicate calls in React StrictMode
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-
     fetchTimetable();
+    
+    // Refresh timetable every 30 seconds to catch new entries
+    const interval = setInterval(() => {
+      fetchTimetable();
+    }, 30000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchTimetable = async () => {
     try {
-      setLoading(true);
+      // Only show loading spinner on initial load
+      if (timetable.length === 0) {
+        setLoading(true);
+      }
       const response = await apiClient.get("/student/timetable/today");
       setTimetable(response.data.timetable || []);
     } catch (error: any) {

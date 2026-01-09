@@ -51,9 +51,15 @@ export default function PlacementPostsPage() {
       if (filters.active) params.append("active", filters.active);
 
       const response = await apiClient.get(`/student/placement/posts?${params.toString()}`);
+      console.log("Placement posts response:", response.data);
       setPosts(response.data.posts || []);
+      
+      if (!response.data.posts || response.data.posts.length === 0) {
+        console.warn("No placement posts returned. Check backend logs for filtering reasons.");
+      }
     } catch (error: any) {
       console.error("Failed to fetch placement posts:", error);
+      console.error("Error details:", error.response?.data);
     } finally {
       setLoading(false);
     }
@@ -121,8 +127,19 @@ export default function PlacementPostsPage() {
 
       {posts.length === 0 ? (
         <Card>
-          <div className="text-center py-8">
-            <p className="text-gray-500">No placement posts found</p>
+          <div className="text-center py-12">
+            <svg className="mx-auto h-16 w-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No placement posts available</h3>
+            <p className="text-sm text-gray-500 mb-4">
+              There are currently no placement opportunities matching your profile.
+            </p>
+            <div className="text-xs text-gray-400 space-y-1">
+              <p>• Try changing the filters above</p>
+              <p>• Check if posts are set to "Active Only"</p>
+              <p>• Contact admin if you believe posts should be visible</p>
+            </div>
           </div>
         </Card>
       ) : (
