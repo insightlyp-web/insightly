@@ -188,8 +188,16 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Empty deps - only run once on mount
 
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close sidebar on route change (for mobile) if needed, though Sidebar Link onClick handles it too
+  // We can leave it to the Link onClick in Sidebar for smoother UX
+
+  // ... (rest of the loading logic is fine) ...
+
   if (loading) {
     return (
+      // ... (loading spinner) ...
       <div className="flex min-h-screen items-center justify-center bg-gray-50">
         <div className="text-center">
           <Spinner size={32} className="text-blue-600 mx-auto" />
@@ -199,13 +207,13 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
     );
   }
 
-  // If no profile after loading, show error message but still render children
-  // This prevents Next.js from showing 404
+  // If no profile after loading...
   if (!profile) {
     return (
       <div className="flex h-screen bg-gray-50">
-        <Sidebar />
+        <Sidebar isOpen={false} /> {/* Default closed if error */}
         <div className="flex-1 flex flex-col overflow-hidden">
+          {/* ... */}
           <div className="bg-white border-b border-gray-200 px-6 py-4">
           </div>
           <main className="flex-1 overflow-y-auto p-6">
@@ -227,10 +235,15 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <Sidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <Header userName={profile.full_name} department={profile.department} role={profile.role} />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="flex-1 flex flex-col overflow-hidden w-full relative">
+        <Header
+          userName={profile.full_name}
+          department={profile.department}
+          role={profile.role}
+          onMenuClick={() => setSidebarOpen(true)}
+        />
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 w-full">{children}</main>
       </div>
       <NixiWidget />
     </div>
